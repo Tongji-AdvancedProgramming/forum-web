@@ -13,11 +13,13 @@ interface Return {
  * @param result 在这里调用axios的函数
  * @param operation 操作名称
  * @param callback 成功的回调
+ * @param allFinishCallback 所有操作结束后的回掉
  */
 export function doAxios(
   result: Promise<AxiosResponse<Return>>,
   operation: string,
   callback: (data: any | null) => void,
+  allFinishCallback?: () => void,
 ) {
   result
     .then((res: AxiosResponse) => {
@@ -46,6 +48,11 @@ export function doAxios(
         message.warn(`${operation}失败：网络错误`).then(() => {})
       } else {
         message.warn(`${operation}失败：浏览器错误`).then(() => {})
+      }
+    })
+    .finally(() => {
+      if (allFinishCallback) {
+        allFinishCallback()
       }
     })
 }

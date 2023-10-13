@@ -34,4 +34,14 @@ export function convertToStudent(raw: StudentRaw): Student {
     stuTerm: raw.stuTerm,
     stuUserLevel: raw.stuUserlevel,
   }
+  if (raw.stuCno1 && raw.stuCno1.length > 0 && raw.stuCno1IsDel !== "1") {
+    student.stuCourse.push(raw.stuCno1)
+  }
+  if (raw.stuCno2 && raw.stuCno2.length > 0 && raw.stuCno2IsDel !== "1") {
+    student.stuCourse.push(raw.stuCno2)
+  }
+  if (raw.stuCno3 && raw.stuCno3.length > 0 && raw.stuCno3IsDel !== "1") {
+    student.stuCourse.push(raw.stuCno3)
+  }
+  return student
 }
