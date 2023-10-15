@@ -34,7 +34,7 @@ const convertCourseTreeToAntTree = (tree: CourseTree): DataNode[] => {
         tree2.children!.push(
           ...week.homeworks.map((hw) => {
             return {
-              title: `${hw.hwId} - ${hw.hwDescription}`,
+              title: `${hw.hwId.toString().padStart(4, "0")} - ${hw.hwDescription}`,
               key: `0-${id1}-${week.number}-${hw.hwId}`,
             }
           }),
@@ -46,13 +46,17 @@ const convertCourseTreeToAntTree = (tree: CourseTree): DataNode[] => {
   })
 }
 
-const treeData = ref<TreeProps["treeData"]>([])
+const treeData = ref<DataNode[]>([])
 
 const router = useRouter()
 
 const handleSelect = (selectedKeys: string[]) => {
   let key = selectedKeys[0]
   let keys = key.split("-")
+
+  // 为了避免学期字符串中的斜杠对路由造成干扰，我们先把它转换成-。
+  keys[1] = keys[1].replace(/\//g, "-")
+
   console.log(keys)
 
   if (keys.length == 3 && keys[2] == "G") {
@@ -90,7 +94,14 @@ onMounted(() => {
 
 <template>
   <a-spin :spinning="loading">
-    <a-tree show-line show-icon :tree-data="treeData" @select="handleSelect"> </a-tree>
+    <div v-if="treeData.length > 0">
+      <a-tree show-line show-icon :tree-data="treeData" @select="handleSelect"> </a-tree>
+    </div>
+    <div v-else>
+      <a-empty>
+        <template #description> 当前没有您可以访问的板块 </template>
+      </a-empty>
+    </div>
   </a-spin>
 </template>
 

@@ -45,3 +45,7 @@ export function convertToStudent(raw: StudentRaw): Student {
   }
   return student
 }
+
+export function getStudentString(student: Student): String {
+  return `${student.stuNo}-${student.stuClassShortName}-${student.stuNo}`
+}

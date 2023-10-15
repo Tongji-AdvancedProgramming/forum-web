@@ -8,11 +8,13 @@ import { useStore } from "vuex"
 import { convertToStudent } from "@/model/Student.ts"
 import FooterView from "@/components/FooterView.vue"
 import InfoCompletionModal from "@/components/user/InfoCompletionModal.vue"
+import { StudentInfo } from "@/model/QuickType/StudentInfo.ts"
+import StatusBarUserCard from "@/components/user/StatusBarUserCard.vue"
 
 const isMobile = window.innerWidth < 768
 const headerHeight = ref(isMobile ? "50px" : "64px")
 
-const infoCompletionOpen = ref(true)
+const infoCompletionOpen = ref(false)
 
 const store = useStore()
 
@@ -20,6 +22,9 @@ onMounted(() => {
   doAxios(axios.get("/api/user"), "检查用户信息", (rawStudent: StudentRaw) => {
     let user = convertToStudent(rawStudent)
     store.commit("setUser", user)
+    doAxios(axios.get("/api/user/info"), "获取用户论坛信息", (rawStudentInfo: StudentInfo) => {
+      store.commit("setUserInfo", rawStudentInfo)
+    })
   })
 })
 </script>
@@ -38,8 +43,10 @@ onMounted(() => {
           lineHeight: headerHeight,
         }"
       >
-        <div class="">
+        <div class="flex">
           <span class="font-light">同济高程论坛</span>
+          <div class="grow" />
+          <status-bar-user-card />
         </div>
       </a-layout-header>
       <a-layout-content>

@@ -34,11 +34,11 @@ export function doAxios(
       }
     })
     .catch((err: AxiosError) => {
+      console.error(err)
       if (err.response) {
         if (err.response.status == 401) {
-          message.warn(`您未登录或登录失效，带您去登录。`).then(() => {
-            router.push("/login").then(() => {})
-          })
+          message.warn(`您未登录或登录失效，带您去登录。`).then(() => {})
+          router.push("/login").then(() => {})
         } else if (err.response.status == 403) {
           message.warn(`接口拒绝访问`).then(() => {})
         } else {

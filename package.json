@@ -9,8 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "animate.css": "^4.1.1",
     "ant-design-vue": "4.x",
     "axios": "^1.5.1",
+    "oh-vue-icons": "1.0.0-rc3",
+    "typescript-cookie": "^1.0.6",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5",
     "vuex": "^4.0.2"

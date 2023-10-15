@@ -1,9 +1,12 @@
 import { createStore } from "vuex"
 import { Student } from "@/model/Student.ts"
+import { StudentInfo } from "@/model/QuickType/StudentInfo.ts"
 
 interface StoreData {
+  loggedIn: boolean
   user: Student
   userLevel: number
+  userInfo: StudentInfo
 }
 
 export const store = createStore<StoreData>({
@@ -24,14 +27,18 @@ export const store = createStore<StoreData>({
       stuUserLevel: "",
     },
     userLevel: 0,
+    userInfo: { avatar: "", nickname: "", stuNo: "" },
   },
   mutations: {
-    setUser(state, user: Student) {
+    setUser(state: StoreData, user: Student) {
       state.loggedIn = true
       state.user = user
       state.userLevel = Number(user.stuUserLevel)
     },
-    logOut(state) {
+    setUserInfo(state: StoreData, userInfo: StudentInfo) {
+      state.userInfo = userInfo
+    },
+    logOut(state: StoreData) {
       state.loggedIn = false
     },
   },
