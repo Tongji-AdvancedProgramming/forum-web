@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router"
-import { computed, onMounted, ref } from "vue"
+import { computed, defineAsyncComponent, h, onMounted, reactive, ref, watch } from "vue"
 import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
 import { Board } from "@/model/QuickType/Board.ts"
+import ForumTree from "@/components/forum/ForumTree.vue"
 
 const route = useRoute()
 
 // 我们把 为了避免学期字符串对路由造成干扰转换的/ 转换回来。
-const id = ref<String>((<String>route.params["id"]).replace(/-/g, "/"))
+const id = computed(() => (<String>route.params["id"]).replace(/-/g, "/"))
+// 获取当前页面类型
+const type = computed(() => <String | undefined>route.params["type"] ?? "list")
 
 const board = ref<Board>({
   course: { courseCode: "", courseFname: "", courseNo: "", courseSname: "", courseTerm: "", courseType: "" },
@@ -20,7 +23,7 @@ const board = ref<Board>({
 
 const loading = ref(false)
 
-onMounted(() => {
+const refresh = () => {
   loading.value = true
   doAxios(
     axios.get("/api/board", { params: { id: id.value } }),
@@ -32,6 +35,12 @@ onMounted(() => {
       loading.value = false
     },
   )
+}
+
+watch(id, refresh)
+
+onMounted(() => {
+  refresh()
 })
 
 const title = computed(() => {
@@ -39,20 +48,39 @@ const title = computed(() => {
   else if (board.value.location == "HOMEWORK") return board.value.homework?.hwDescription ?? "作业问题"
   else return `第${board.value.week}周整体问题`
 })
+
+const components = () => {
+  switch (type.value) {
+    case "new":
+      return defineAsyncComponent(() => import("@/components/forum/post/NewPost.vue"))
+    default:
+      return defineAsyncComponent(() => import("@/components/forum/board/ListPosts.vue"))
+  }
+}
 </script>
 
 <template>
   <a-spin :spinning="loading">
     <div class="container pt-3 mx-auto">
-      <a-card class="mx-2 md:mx-3">
-        <div class="text-2xl font-normal md:text-4xl">{{ title }}</div>
-        <div class="text-sm text-gray-400 mt-2">
-          <div class="md:grid md:grid-cols-4">
-            <div><v-icon name="bi-book" /> {{ board.course.courseFname }}</div>
-          </div>
+      <div class="mx-2 md:mx-3 flex flex-col md:flex-row gap-3">
+        <div class="flex flex-col gap-3 md:w-[400px]">
+          <a-card class="">
+            <div class="text-2xl font-normal md:text-4xl">{{ title }}</div>
+            <div class="text-sm text-gray-400 mt-2">
+              <div class="md:grid md:grid-cols-2">
+                <div><v-icon name="bi-book" /> {{ board.course.courseFname }}</div>
+              </div>
+            </div>
+          </a-card>
+          <a-card>
+            <div class="text-sm font-bold mb-2">导航</div>
+            <forum-tree />
+          </a-card>
         </div>
-        <a-divider class="mt-2" />
-      </a-card>
+        <div class="md:grow">
+          <component :is="components()" />
+        </div>
+      </div>
     </div>
   </a-spin>
 </template>
