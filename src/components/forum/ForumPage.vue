@@ -5,6 +5,7 @@ import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
 import { Board } from "@/model/QuickType/Board.ts"
 import ForumTree from "@/components/forum/ForumTree.vue"
+import { DownOutlined, UpOutlined } from "@ant-design/icons-vue"
 
 const route = useRoute()
 
@@ -39,8 +40,11 @@ const refresh = () => {
 
 watch(id, refresh)
 
+const hideNavigation = ref(false)
+
 onMounted(() => {
   refresh()
+  hideNavigation.value = window.innerWidth < 768
 })
 
 const title = computed(() => {
@@ -73,12 +77,25 @@ const components = () => {
             </div>
           </a-card>
           <a-card>
-            <div class="text-sm font-bold mb-2">导航</div>
-            <forum-tree />
+            <div class="flex items-center">
+              <div class="text-sm font-bold">导航</div>
+              <div class="grow" />
+              <a-button
+                v-if="hideNavigation"
+                :icon="h(DownOutlined)"
+                class="text-gray-400"
+                type="text"
+                @click="hideNavigation = false"
+              />
+              <a-button v-else :icon="h(UpOutlined)" class="text-gray-400" type="text" @click="hideNavigation = true" />
+            </div>
+            <transition>
+              <forum-tree v-show="!hideNavigation" class="mt-2" />
+            </transition>
           </a-card>
         </div>
         <div class="md:grow">
-          <component :is="components()" />
+          <component :is="components()" :board="board" />
         </div>
       </div>
     </div>

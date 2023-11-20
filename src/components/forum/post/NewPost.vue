@@ -3,6 +3,14 @@ import Editor from "@tinymce/tinymce-vue"
 import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
 import { ref } from "vue"
+import { message } from "ant-design-vue"
+import { Board } from "@/model/QuickType/Board.ts"
+
+interface Props {
+  board: Board
+}
+
+const props = defineProps<Props>()
 
 const imageUploadHandler = (blobInfo) =>
   new Promise((resolve, reject) => {
@@ -23,15 +31,30 @@ const imageUploadHandler = (blobInfo) =>
     )
   })
 
+const title = ref("")
 const mceEditor = ref<typeof Editor | null>()
 
 const send = () => {
   if (mceEditor.value) {
     let editor = mceEditor.value.getEditor()
-    let content = <String>editor.getContent()
+    let content = <string>editor.getContent()
 
     if (content.length == 0) {
+      message.warn("内容不能为空")
+      return
+    } else if (title.value.length == 0) {
+      message.warn("标题不能为空")
+      return
     }
+
+    let form = new FormData()
+    form.append("boardId", props.board.id)
+    form.append("title", title.value)
+    form.append("content", content)
+
+    doAxios(axios.post("/api/post", form), "发送帖子", () => {
+      message.success("发送成功")
+    })
   }
 }
 </script>
@@ -44,7 +67,7 @@ const send = () => {
         <a>标题指南</a>
         <a>提问的艺术</a>
       </div>
-      <a-input class="h-[50px]" />
+      <a-input v-model:value="title" class="h-[50px]" />
     </div>
     <a-divider />
     <div>
