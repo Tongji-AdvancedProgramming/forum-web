@@ -25,7 +25,8 @@ export interface Post {
   postTag08: "0" | "1"
   postTag09: "0" | "1"
   postTag10: "0" | "1"
-  postContent: "0" | "1"
+  postTitle: string
+  postContent: string
   postDate: Date
   postIsDel: "0" | "1"
   postComment: string

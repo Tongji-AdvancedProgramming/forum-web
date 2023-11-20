@@ -4,6 +4,7 @@ import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
 import { onMounted, ref, watch } from "vue"
 import { Post } from "@/model/QuickType/Post.ts"
+import dayjs from "dayjs"
 
 interface Props {
   board: Board
@@ -30,7 +31,23 @@ onMounted(() => {
   <a-card>
     <div class="text-sm font-bold">所有帖子</div>
     <div class="mt-3 flex flex-col gap-3">
-      <div v-for="post in posts" :key="post.postId">{{ JSON.stringify(post) }}</div>
+      <a-list item-layout="horizontal" :data-source="posts">
+        <template #renderItem="{ item }: { item: Post }">
+          <a-list-item>
+            <a-list-item-meta>
+              <template #title>
+                <a href="https://www.antdv.com/">{{ item.postTitle }}</a>
+              </template>
+              <template #description>
+                <div class="flex flex-col md:flex-row md:gap-3">
+                  <div>{{dayjs(item.postDate).format("lll")}}</div>
+                  <div>發送者：Cinea醬</div>
+                </div>
+              </template>
+            </a-list-item-meta>
+          </a-list-item>
+        </template>
+      </a-list>
     </div>
   </a-card>
 </template>
