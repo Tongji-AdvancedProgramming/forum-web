@@ -10,8 +10,8 @@ dayjs.locale("zh-cn")
 dayjs.extend(localizedFormat)
 
 import router from "@/tools/router.ts"
-import { store } from "@/tools/store.ts"
+import { store, key } from "@/tools/store.ts"
 import "@/tools/icons.ts"
 import { OhVueIcon } from "oh-vue-icons"
 
-createApp(App).use(router).use(store).component("v-icon", OhVueIcon).mount("#app")
+createApp(App).use(router).use(store, key).component("v-icon", OhVueIcon).mount("#app")

@@ -13,6 +13,8 @@ const route = useRoute()
 const id = computed(() => (<String>route.params["id"]).replace(/-/g, "/"))
 // 获取当前页面类型
 const type = computed(() => <String | undefined>route.params["type"] ?? "list")
+// 获取当前页面的Post Id
+const postId = computed(() => <String | undefined>route.params["postId"] ?? "")
 
 const board = ref<Board>({
   course: { courseCode: "", courseFname: "", courseNo: "", courseSname: "", courseTerm: "", courseType: "" },
@@ -57,6 +59,8 @@ const components = () => {
   switch (type.value) {
     case "new":
       return defineAsyncComponent(() => import("@/components/forum/post/NewPost.vue"))
+    case "post":
+      return defineAsyncComponent(() => import("@/components/forum/post/ViewPost.vue"))
     default:
       return defineAsyncComponent(() => import("@/components/forum/board/ListPosts.vue"))
   }

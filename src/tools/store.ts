@@ -1,13 +1,16 @@
-import { createStore } from "vuex"
+import { createStore, useStore as baseUseStore, Store } from "vuex"
 import { Student } from "@/model/Student.ts"
 import { StudentInfo } from "@/model/QuickType/StudentInfo.ts"
+import { InjectionKey } from "vue"
 
-interface StoreData {
+export interface StoreData {
   loggedIn: boolean
   user: Student
   userLevel: number
   userInfo: StudentInfo
 }
+
+export const key: InjectionKey<Store<StoreData>> = Symbol()
 
 export const store = createStore<StoreData>({
   state: {
@@ -43,3 +46,7 @@ export const store = createStore<StoreData>({
     },
   },
 })
+
+export function useStore() {
+  return baseUseStore(key)
+}

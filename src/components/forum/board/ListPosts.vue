@@ -2,9 +2,14 @@
 import { Board } from "@/model/QuickType/Board.ts"
 import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
-import { onMounted, ref, watch } from "vue"
+import { computed, onMounted, ref, watch } from "vue"
 import { Post } from "@/model/QuickType/Post.ts"
 import dayjs from "dayjs"
+import { useRoute } from "vue-router"
+
+const route = useRoute()
+
+const boardId = computed(() => <String>route.params["id"])
 
 interface Props {
   board: Board
@@ -17,7 +22,7 @@ const posts = ref<Post[]>()
 const fetch = () => {
   let id = props.board.id
   if (id != undefined && id.length > 0)
-    doAxios(axios.get("/api/post", { params: { boardId: id } }), "获取帖子", (_posts: Post[]) => {
+    doAxios(axios.get("/api/post/list", { params: { boardId: id } }), "获取帖子", (_posts: Post[]) => {
       posts.value = _posts
     })
 }
@@ -36,11 +41,11 @@ onMounted(() => {
           <a-list-item>
             <a-list-item-meta>
               <template #title>
-                <a href="https://www.antdv.com/">{{ item.postTitle }}</a>
+                <a :href="`/forum/${boardId}/post/${item.postId}`">{{ item.postTitle }}</a>
               </template>
               <template #description>
                 <div class="flex flex-col md:flex-row md:gap-3">
-                  <div>{{dayjs(item.postDate).format("lll")}}</div>
+                  <div>{{ dayjs(item.postDate).format("lll") }}</div>
                   <div>發送者：Cinea醬</div>
                 </div>
               </template>

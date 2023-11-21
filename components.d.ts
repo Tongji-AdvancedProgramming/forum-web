@@ -45,5 +45,6 @@ declare module 'vue' {
     StatusBarUserCard: typeof import('./src/components/user/StatusBarUserCard.vue')['default']
     TinyMceEditor: typeof import('./src/components/forum/editor/TinyMceEditor.vue')['default']
     UserProfileCard: typeof import('./src/components/user/UserProfileCard.vue')['default']
+    ViewPost: typeof import('./src/components/forum/post/ViewPost.vue')['default']
   }
 }

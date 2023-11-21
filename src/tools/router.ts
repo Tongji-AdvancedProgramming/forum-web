@@ -5,6 +5,7 @@ const routes = [
   { path: "/login", component: () => import("@/components/login/LoginView.vue") },
   { path: "/forum/:id", component: () => import("@/components/forum/ForumPage.vue") },
   { path: "/forum/:id/:type", component: () => import("@/components/forum/ForumPage.vue") },
+  { path: "/forum/:id/:type/:postId", component: () => import("@/components/forum/ForumPage.vue") },
   { path: "/help/login", component: () => import("@/components/help/LoginFaq.vue") },
 ]
 

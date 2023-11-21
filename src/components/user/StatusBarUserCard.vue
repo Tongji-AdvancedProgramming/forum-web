@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useStore } from "vuex"
+import { useStore } from "@/tools/store"
 import { ref } from "vue"
 import { getStudentString } from "@/model/Student.ts"
 import { doAxios } from "@/tools/axios.ts"
@@ -24,7 +24,9 @@ const logout = () => {
       <a-dropdown>
         <div class="flex items-center hover:drop-shadow-lg hover:cursor-pointer duration-300">
           <a-avatar>
-            <template #icon><img :src="store.state.userInfo.avatar" alt="" /></template>
+            <template #icon>
+              <img :src="`http://10.80.43.196/s3/forum/user-avatar/${store.state.user.stuNo}`" alt="" />
+            </template>
           </a-avatar>
           <div class="flex flex-col ml-1">
             <div v-if="showNickname">{{ store.state.userInfo.nickname }}</div>
@@ -34,7 +36,7 @@ const logout = () => {
         <template #overlay>
           <a-menu>
             <a-menu-item>
-              <a @click="showPersonalCard=true">个人中心</a>
+              <a @click="showPersonalCard = true">个人中心</a>
             </a-menu-item>
             <a-menu-item>
               <a @click="logout">退出登录</a>
