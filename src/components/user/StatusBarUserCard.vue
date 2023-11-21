@@ -8,6 +8,7 @@ import axios from "axios"
 const store = useStore()
 
 const showNickname = ref(true)
+const showPersonalCard = ref(false)
 
 const logout = () => {
   doAxios(axios.post("/api/logout", {}, { withCredentials: true }), "登出", () => {
@@ -33,7 +34,7 @@ const logout = () => {
         <template #overlay>
           <a-menu>
             <a-menu-item>
-              <a href="javascript:">个人中心</a>
+              <a @click="showPersonalCard=true">个人中心</a>
             </a-menu-item>
             <a-menu-item>
               <a @click="logout">退出登录</a>
@@ -45,6 +46,9 @@ const logout = () => {
     <div v-else>
       <a class="text-black" href="/login">未登录</a>
     </div>
+    <a-modal v-model:open="showPersonalCard" title="用户信息">
+      <user-profile-card />
+    </a-modal>
   </div>
 </template>
 

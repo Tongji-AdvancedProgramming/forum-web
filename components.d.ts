@@ -28,6 +28,7 @@ declare module 'vue' {
     AModal: typeof import('ant-design-vue/es')['Modal']
     ASpin: typeof import('ant-design-vue/es')['Spin']
     ATree: typeof import('ant-design-vue/es')['Tree']
+    AUpload: typeof import('ant-design-vue/es')['Upload']
     FaqView: typeof import('./src/components/help/FaqView.vue')['default']
     FooterView: typeof import('./src/components/FooterView.vue')['default']
     ForumPage: typeof import('./src/components/forum/ForumPage.vue')['default']
@@ -43,5 +44,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     StatusBarUserCard: typeof import('./src/components/user/StatusBarUserCard.vue')['default']
     TinyMceEditor: typeof import('./src/components/forum/editor/TinyMceEditor.vue')['default']
+    UserProfileCard: typeof import('./src/components/user/UserProfileCard.vue')['default']
   }
 }
