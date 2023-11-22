@@ -6,6 +6,8 @@ import { onMounted, watch } from "vue"
 import { ref } from "vue"
 import { computed } from "vue"
 import { useRoute } from "vue-router"
+import Prism from "prismjs"
+import { nextTick } from "vue"
 
 const route = useRoute()
 
@@ -16,6 +18,7 @@ const type = computed(() => <String | undefined>route.params["type"] ?? "list")
 // 获取当前页面的Post Id
 const postId = computed(() => <String | undefined>route.params["postId"] ?? "")
 
+const loading = ref(false)
 const curPost = ref<Post>({
   postId: 0,
   postTerm: "",
@@ -43,17 +46,22 @@ const curPost = ref<Post>({
   postIsDel: "0",
   postComment: "",
 })
-
-const curReplyPosts = ref<Post[]>([])
+const curPosts = ref<Post[]>([])
 
 const fetch = () => {
+  loading.value = true
   doAxios(
     axios.get("/api/post", { params: { postId: postId.value } }),
     "获取帖子",
-    (res: { post: Post; followedPosts: Post[] }) => {
-      curPost.value = res.post
-      curReplyPosts.value = res.followedPosts
+    (res: { posts: Post[] }) => {
+      curPost.value = res.posts[0]
+      curPosts.value = res.posts.slice(1)
+      nextTick(() => {
+        console.log("Prism:", Prism)
+        Prism.highlightAll(false,(e)=>console.log(e))
+      })
     },
+    () => (loading.value = false),
   )
 }
 watch(postId, fetch)
@@ -63,13 +71,36 @@ onMounted(() => {
 </script>
 
 <template>
-  <a-card>
-    <div class="title">{{ curPost.postTitle }}</div>
-  </a-card>
+  <div v-if="loading">
+    <a-skeleton active />
+    <a-skeleton active />
+    <a-skeleton active />
+  </div>
+  <div v-else>
+    <a-card>
+      <div class="title">{{ curPost.postTitle }}</div>
+      <a-divider />
+      <div v-html="curPost.postContent" class="post-content" />
+    </a-card>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .title {
-  @apply font-bold;
+  @apply font-normal text-3xl;
+}
+</style>
+
+<style lang="scss">
+.post-content {
+  @import "@/assets/post.scss";
+
+  @media (min-width: 1280px) {
+    max-width: 825px;
+  }
+
+  @media (min-width: 1536px) {
+    max-width: 1024px;
+  }
 }
 </style>

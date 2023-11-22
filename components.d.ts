@@ -26,6 +26,7 @@ declare module 'vue' {
     AMenu: typeof import('ant-design-vue/es')['Menu']
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
     AModal: typeof import('ant-design-vue/es')['Modal']
+    ASkeleton: typeof import('ant-design-vue/es')['Skeleton']
     ASpin: typeof import('ant-design-vue/es')['Spin']
     ATree: typeof import('ant-design-vue/es')['Tree']
     AUpload: typeof import('ant-design-vue/es')['Upload']

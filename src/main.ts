@@ -1,7 +1,9 @@
 import { createApp } from "vue"
 import App from "./App.vue"
 import "./style.css"
+
 import "animate.css"
+import "prismjs/themes/prism-coy.min.css"
 
 import dayjs from "dayjs"
 import localizedFormat from "dayjs/plugin/localizedFormat"

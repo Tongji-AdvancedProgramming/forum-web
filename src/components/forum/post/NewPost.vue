@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
-import { ref, defineAsyncComponent } from "vue"
+import { ref, defineAsyncComponent, computed } from "vue"
 import { message } from "ant-design-vue"
 import { Board } from "@/model/QuickType/Board.ts"
+import { useRoute } from "vue-router"
+import router from "@/tools/router"
+
+const route = useRoute()
+const boardId = computed(() => <String>route.params["id"])
 
 const TinyMceEditor = defineAsyncComponent(() => import("@/components/forum/editor/TinyMceEditor.vue"))
 
@@ -35,6 +40,7 @@ const send = () => {
 
     doAxios(axios.post("/api/post", form), "发送帖子", () => {
       message.success("发送成功")
+      router.push(`/forum/${boardId.value}`)
     })
   }
 }

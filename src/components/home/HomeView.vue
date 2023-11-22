@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useStore } from "vuex"
+import { useStore } from "@/tools/store"
 import NotificationBox from "@/components/home/NotificationBox.vue"
 import ForumTree from "@/components/forum/ForumTree.vue"
 

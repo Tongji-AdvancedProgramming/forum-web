@@ -67,6 +67,7 @@ const init = reactive({
   height: props.height,
   promotion: false,
   images_upload_handler: imageUploadHandler,
+  codesample_global_prismjs: true
 })
 
 const { modelValue } = toRefs(props)

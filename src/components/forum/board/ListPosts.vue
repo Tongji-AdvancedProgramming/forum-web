@@ -6,6 +6,8 @@ import { computed, onMounted, ref, watch } from "vue"
 import { Post } from "@/model/QuickType/Post.ts"
 import dayjs from "dayjs"
 import { useRoute } from "vue-router"
+import { PlusOutlined } from "@ant-design/icons-vue"
+import router from "@/tools/router"
 
 const route = useRoute()
 
@@ -30,12 +32,20 @@ watch(props.board, fetch)
 onMounted(() => {
   fetch()
 })
+
+const postNew = () => {
+  router.push(`/forum/${boardId.value}/new`)
+}
 </script>
 
 <template>
   <a-card>
     <div class="text-sm font-bold">所有帖子</div>
-    <div class="mt-3 flex flex-col gap-3">
+    <div class="mt-6 flex gap-3">
+      <!-- <div class="grow"/> -->
+      <a-button type="primary" @click="postNew"><PlusOutlined/> 发布新帖子</a-button>
+    </div>
+    <div class="flex flex-col gap-3">
       <a-list item-layout="horizontal" :data-source="posts">
         <template #renderItem="{ item }: { item: Post }">
           <a-list-item>

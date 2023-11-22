@@ -3,6 +3,7 @@ import { resolve } from "path"
 import vue from "@vitejs/plugin-vue"
 import Components from "unplugin-vue-components/vite"
 import { AntDesignVueResolver } from "unplugin-vue-components/resolvers"
+import { prismjsPlugin } from "vite-plugin-prismjs"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,6 +16,9 @@ export default defineConfig({
           importStyle: false, // css in js
         }),
       ],
+    }),
+    prismjsPlugin({
+      languages: "all",
     }),
   ],
   resolve: {
