@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FaqView from "@/components/help/FaqView.vue"
+import FaqView from "@/views/help/FaqView.vue"
 import { ref } from "vue"
 
 const activeKey = ref(0)

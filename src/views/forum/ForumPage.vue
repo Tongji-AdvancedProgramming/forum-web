@@ -58,11 +58,11 @@ const title = computed(() => {
 const components = () => {
   switch (type.value) {
     case "new":
-      return defineAsyncComponent(() => import("@/components/forum/post/NewPost.vue"))
+      return defineAsyncComponent(() => import("@/views/forum/post/NewPost.vue"))
     case "post":
-      return defineAsyncComponent(() => import("@/components/forum/post/ViewPost.vue"))
+      return defineAsyncComponent(() => import("@/views/forum/post/ViewPost.vue"))
     default:
-      return defineAsyncComponent(() => import("@/components/forum/board/ListPosts.vue"))
+      return defineAsyncComponent(() => import("@/views/forum/board/ListPosts.vue"))
   }
 }
 </script>

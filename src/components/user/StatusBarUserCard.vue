@@ -4,6 +4,7 @@ import { ref } from "vue"
 import { getStudentString } from "@/model/Student.ts"
 import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
+import { getAvatarUrl } from "@/helpers/avatar"
 
 const store = useStore()
 
@@ -25,7 +26,7 @@ const logout = () => {
         <div class="flex items-center hover:drop-shadow-lg hover:cursor-pointer duration-300">
           <a-avatar>
             <template #icon>
-              <img :src="`http://10.80.43.196/s3/forum/user-avatar/${store.state.user.stuNo}`" alt="" />
+              <img :src="getAvatarUrl(store.state.user.stuNo)" alt="" />
             </template>
           </a-avatar>
           <div class="flex flex-col ml-1">
@@ -48,7 +49,7 @@ const logout = () => {
     <div v-else>
       <a class="text-black" href="/login">未登录</a>
     </div>
-    <a-modal v-model:open="showPersonalCard" title="用户信息">
+    <a-modal v-model:open="showPersonalCard" title="用户信息" @ok="showPersonalCard=false">
       <user-profile-card />
     </a-modal>
   </div>

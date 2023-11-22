@@ -26,8 +26,10 @@ declare module 'vue' {
     AMenu: typeof import('ant-design-vue/es')['Menu']
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
     AModal: typeof import('ant-design-vue/es')['Modal']
+    APopover: typeof import('ant-design-vue/es')['Popover']
     ASkeleton: typeof import('ant-design-vue/es')['Skeleton']
     ASpin: typeof import('ant-design-vue/es')['Spin']
+    ATextarea: typeof import('ant-design-vue/es')['Textarea']
     ATree: typeof import('ant-design-vue/es')['Tree']
     AUpload: typeof import('ant-design-vue/es')['Upload']
     FaqView: typeof import('./src/components/help/FaqView.vue')['default']
@@ -46,6 +48,7 @@ declare module 'vue' {
     StatusBarUserCard: typeof import('./src/components/user/StatusBarUserCard.vue')['default']
     TinyMceEditor: typeof import('./src/components/forum/editor/TinyMceEditor.vue')['default']
     UserProfileCard: typeof import('./src/components/user/UserProfileCard.vue')['default']
+    UserSmallProfile: typeof import('./src/components/user/UserSmallProfile.vue')['default']
     ViewPost: typeof import('./src/components/forum/post/ViewPost.vue')['default']
   }
 }

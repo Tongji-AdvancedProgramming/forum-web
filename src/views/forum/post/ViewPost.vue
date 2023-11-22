@@ -6,7 +6,6 @@ import { ref } from "vue"
 import { computed } from "vue"
 import { useRoute } from "vue-router"
 import Prism from "prismjs"
-import { nextTick } from "vue"
 import { onMounted } from "vue"
 import { ClockCircleOutlined, UserOutlined } from "@ant-design/icons-vue"
 import dayjs from "dayjs"
@@ -71,14 +70,14 @@ onMounted(() => {
 <template>
   <a-card>
     <div class="title">{{ curPost.postTitle }}</div>
-    <div class="flex gap-5 mt-2 text-gray-400">
+    <div class="flex flex-col md:flex-row md:gap-5 mt-2 text-gray-400">
       <div>
-        <ClockCircleOutlined/> 
+        <clock-circle-outlined/> 
         {{ dayjs(curPost.postDate).format("lll") }}
       </div>
-      <div>
-        <UserOutlined/> 
-        {{ curPost.postSno }}
+      <div class="flex gap-1">
+        <user-outlined/> 
+        <user-small-profile :uid="curPost.postSno"/>
       </div>
     </div>
     <div v-html="curPost.postContent" class="post-content" />
