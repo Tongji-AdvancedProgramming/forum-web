@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { Post } from "@/model/QuickType/Post"
-import { doAxios } from "@/tools/axios"
+import { doAxiosAsync } from "@/tools/axios"
 import axios from "axios"
-import { onMounted, watch } from "vue"
 import { ref } from "vue"
 import { computed } from "vue"
 import { useRoute } from "vue-router"
 import Prism from "prismjs"
 import { nextTick } from "vue"
+import { onMounted } from "vue"
+import { ClockCircleOutlined, UserOutlined } from "@ant-design/icons-vue"
+import dayjs from "dayjs"
 
 const route = useRoute()
 
@@ -48,41 +50,39 @@ const curPost = ref<Post>({
 })
 const curPosts = ref<Post[]>([])
 
-const fetch = () => {
-  loading.value = true
-  doAxios(
+const fetch = async () => {
+  await doAxiosAsync(
     axios.get("/api/post", { params: { postId: postId.value } }),
     "获取帖子",
-    (res: { posts: Post[] }) => {
+    async (res: { posts: Post[] }) => {
       curPost.value = res.posts[0]
       curPosts.value = res.posts.slice(1)
-      nextTick(() => {
-        console.log("Prism:", Prism)
-        Prism.highlightAll(false,(e)=>console.log(e))
-      })
     },
-    () => (loading.value = false),
   )
 }
-watch(postId, fetch)
+
+await fetch()
+
 onMounted(() => {
-  fetch()
+  Prism.highlightAll()
 })
 </script>
 
 <template>
-  <div v-if="loading">
-    <a-skeleton active />
-    <a-skeleton active />
-    <a-skeleton active />
-  </div>
-  <div v-else>
-    <a-card>
-      <div class="title">{{ curPost.postTitle }}</div>
-      <a-divider />
-      <div v-html="curPost.postContent" class="post-content" />
-    </a-card>
-  </div>
+  <a-card>
+    <div class="title">{{ curPost.postTitle }}</div>
+    <div class="flex gap-5 mt-2 text-gray-400">
+      <div>
+        <ClockCircleOutlined/> 
+        {{ dayjs(curPost.postDate).format("lll") }}
+      </div>
+      <div>
+        <UserOutlined/> 
+        {{ curPost.postSno }}
+      </div>
+    </div>
+    <div v-html="curPost.postContent" class="post-content" />
+  </a-card>
 </template>
 
 <style scoped lang="scss">

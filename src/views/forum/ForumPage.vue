@@ -99,7 +99,16 @@ const components = () => {
           </a-card>
         </div>
         <div class="md:grow">
-          <component :is="components()" :board="board" />
+          <suspense>
+            <component :is="components()" :board="board" />
+            <template #fallback>
+              <div>
+                <a-skeleton active />
+                <a-skeleton active />
+                <a-skeleton active />
+              </div>
+            </template>
+          </suspense>
         </div>
       </div>
     </div>

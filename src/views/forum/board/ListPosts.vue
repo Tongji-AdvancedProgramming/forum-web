@@ -10,13 +10,11 @@ import { PlusOutlined } from "@ant-design/icons-vue"
 import router from "@/tools/router"
 
 const route = useRoute()
-
 const boardId = computed(() => <String>route.params["id"])
 
 interface Props {
   board: Board
 }
-
 const props = defineProps<Props>()
 
 const posts = ref<Post[]>()
@@ -40,7 +38,7 @@ const postNew = () => {
 
 <template>
   <a-card>
-    <div class="text-sm font-bold">所有帖子</div>
+    <div class="text-lg font-normal">所有帖子</div>
     <div class="mt-6 flex gap-3">
       <!-- <div class="grow"/> -->
       <a-button type="primary" @click="postNew"><PlusOutlined/> 发布新帖子</a-button>
