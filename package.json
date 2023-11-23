@@ -28,10 +28,13 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.23.3",
+    "@babel/eslint-parser": "^7.23.3",
     "@types/node": "^20.8.4",
     "@types/prismjs": "^1.26.3",
     "@vitejs/plugin-vue": "^4.2.3",
     "autoprefixer": "^10.4.16",
+    "eslint": "^8.54.0",
     "postcss": "^8.4.31",
     "prettier": "3.0.3",
     "stylelint": "^15.11.0",
@@ -40,6 +43,7 @@
     "typescript": "^5.0.2",
     "unplugin-vue-components": "^0.25.2",
     "vite": "^4.4.5",
+    "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-prismjs": "^0.0.8",
     "vue-tsc": "^1.8.5"
   }

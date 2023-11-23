@@ -32,9 +32,10 @@ onMounted(() => {
 })
 
 const resolveBlob = () => {
-  cropper?.getCroppedCanvas().toBlob((blob) => {
-    console.log("inside", blob)
-    return blob
+  return new Promise((resolve) => {
+    cropper?.getCroppedCanvas().toBlob((blob) => {
+      resolve(blob)
+    })
   })
 }
 

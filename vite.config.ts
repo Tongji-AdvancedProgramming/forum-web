@@ -22,6 +22,9 @@ export default defineConfig({
       languages: ["java", "clike", "c#", "rust", "go", "javascript"],
       plugins: ["toolbar", "line-numbers", "show-language", "copy-to-clipboard", "match-braces"],
     }),
+    eslintPlugin({
+      include: ["src/**/*.ts", "src/**/*.vue", "src/*.ts", "src/*.vue"],
+    }),
   ],
   resolve: {
     alias: {

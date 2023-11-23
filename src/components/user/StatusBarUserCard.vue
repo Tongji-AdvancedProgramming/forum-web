@@ -4,7 +4,7 @@ import { ref } from "vue"
 import { getStudentString } from "@/model/Student.ts"
 import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
-import { getAvatarUrl } from "@/helpers/avatar"
+import { getAvatarUrl } from "@/helpers/user.js"
 
 const store = useStore()
 
