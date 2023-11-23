@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { CourseTree } from "@/model/QuickType/CourseTree.ts"
-import { TreeProps } from "ant-design-vue"
-import { computed, onMounted, ref } from "vue"
+import { onMounted, ref } from "vue"
 import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
 import { DataNode } from "ant-design-vue/es/vc-tree/interface"
 import { useRoute, useRouter } from "vue-router"
+import { Key } from "ant-design-vue/es/_util/type"
 
 const convertCourseTreeToAntTree = (tree: CourseTree): DataNode[] => {
   return tree.courses.map((course) => {
@@ -69,8 +69,8 @@ const loading = ref(false)
 
 const route = useRoute()
 
-const expId = ref([(<String>route.params["id"])?.replace(/-/g, "/")] ?? "")
-const selId = ref([(<String>route.params["id"])?.replace(/-/g, "/")] ?? "")
+const expId = ref([(<string>route.params["id"])?.replace(/-/g, "/")] ?? "")
+const selId = ref([(<string>route.params["id"])?.replace(/-/g, "/")] ?? "")
 
 onMounted(() => {
   loading.value = true

@@ -18,7 +18,6 @@ const info = ref<StudentShortInfo>({
   major: "",
   role: 0,
   description: "",
-  value: undefined,
 })
 const tripleStr = computed(() => `${info.value.stuNo}-${info.value.major}-${info.value.realName}`)
 const breifStr = computed(() => `${info.value.nickName}(${tripleStr.value})`)
@@ -27,7 +26,7 @@ onMounted(() => {
   doAxios(
     axios.get("/api/user/shortInfo", { params: { id: props.uid } }),
     "获取用户信息",
-    (ssi: StudentShortInfo) => (info.value = ssi),
+    (ssi: StudentShortInfo) => info.value = ssi,
   )
 })
 </script>

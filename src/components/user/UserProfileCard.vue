@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { doAxios } from "@/tools/axios"
 import { UploadOutlined } from "@ant-design/icons-vue"
-import { Modal, UploadChangeParam, message } from "ant-design-vue"
+import { UploadChangeParam, message } from "ant-design-vue"
 import ImageCropper from "@/components/helper/ImageCropper.vue"
 import axios from "axios"
-import { ref, h } from "vue"
-
+import { ref } from "vue"
+ 
 const uploadFileList = ref([])
 const handleUploadStatusChange = (info: UploadChangeParam) => {
   if (info.file.status !== "uploading") {
@@ -39,7 +39,7 @@ const handleBeforeUpload = (file: File) => {
   })
 }
 const handleAvatarCropperOk = () => {
-  ; (<Promise<Blob>>avatarCropper.value!.resolveBlob()).then((blob) => {
+   (<Promise<Blob>>avatarCropper.value!.resolveBlob()).then((blob) => {
     avatarCroppingResult.value = blob
     showAvatarCropper.value = false
   })
@@ -88,7 +88,7 @@ const setSignature = () => {
       location.reload()
     },
     () => (settingSignature.value = false),
-  )
+  ) 
 }
 
 const uploadCardFileList = ref([])
@@ -113,7 +113,7 @@ const handleBeforeCardUpload = (file: File) => {
   })
 }
 const handleCardCropperOk = () => {
-  ; (<Promise<Blob>>cardCropper.value!.resolveBlob()).then((blob) => {
+   (<Promise<Blob>>cardCropper.value!.resolveBlob()).then((blob) => {
     cardCroppingResult.value = blob
     showCardCropper.value = false
   })

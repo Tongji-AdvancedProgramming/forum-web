@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router"
-import { computed, defineAsyncComponent, h, onMounted, reactive, ref, watch } from "vue"
+import { computed, defineAsyncComponent, h, onMounted, ref, watch } from "vue"
 import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
 import { Board } from "@/model/QuickType/Board.ts"
@@ -10,11 +10,11 @@ import { DownOutlined, UpOutlined } from "@ant-design/icons-vue"
 const route = useRoute()
 
 // 我们把 为了避免学期字符串对路由造成干扰转换的/ 转换回来。
-const id = computed(() => (<String>route.params["id"]).replace(/-/g, "/"))
+const id = computed(() => (<string>route.params["id"]).replace(/-/g, "/"))
 // 获取当前页面类型
-const type = computed(() => <String | undefined>route.params["type"] ?? "list")
+const type = computed(() => <string | undefined>route.params["type"] ?? "list")
 // 获取当前页面的Post Id
-const postId = computed(() => <String | undefined>route.params["postId"] ?? "")
+// const postId = computed(() => <string | undefined>route.params["postId"] ?? "")
 
 const board = ref<Board>({
   course: { courseCode: "", courseFname: "", courseNo: "", courseSname: "", courseTerm: "", courseType: "" },
@@ -31,8 +31,10 @@ const refresh = () => {
   doAxios(
     axios.get("/api/board", { params: { id: id.value } }),
     "获取板块数据",
-    (data: Board) => {
-      board.value = data
+    (data) => {
+      if(data instanceof Board){
+        board.value = data
+      }
     },
     () => {
       loading.value = false

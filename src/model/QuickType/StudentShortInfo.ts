@@ -5,7 +5,6 @@
 //   const studentShortInfo = Convert.toStudentShortInfo(json);
 
 export interface StudentShortInfo {
-  value: any
   nickName: string
   realName: string
   description: string

@@ -2,7 +2,6 @@
 import { getAvatarUrl, getCardBackgroundUrl } from "@/helpers/user.js"
 import { StudentShortInfo } from "@/model/QuickType/StudentShortInfo"
 import { computed } from "vue"
-import { ref } from "vue"
 
 interface Props {
   info: StudentShortInfo

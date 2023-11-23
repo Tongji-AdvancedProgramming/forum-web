@@ -5,7 +5,7 @@ import router from "@/tools/router.ts"
 interface Return {
   code: number
   msg: string
-  data?: any
+  data?: object
 }
 
 /**
@@ -18,7 +18,7 @@ interface Return {
 export function doAxios(
   result: Promise<AxiosResponse<Return>>,
   operation: string,
-  callback: (data: any | null) => void,
+  callback: (data: any) => void,
   allFinishCallback?: () => void,
 ) {
   result
@@ -67,13 +67,13 @@ export function doAxios(
 export async function doAxiosAsync(
   result: Promise<AxiosResponse<Return>>,
   operation: string,
-  callback: (data: any | null) => Promise<void>,
+  callback: (data: any) => Promise<void>,
   allFinishCallback?: () => Promise<void>,
 ) {
   try {
-    let res = await result
+    const res = await result
     if (res.data.code && res.data.code === 10000) {
-      await callback(res.data.data)
+      await callback(res.data.data ?? null)
     } else {
       if (res.data.code) {
         message.warn(`${operation}失败：${res.data.msg}`).then(() => {})
@@ -81,21 +81,23 @@ export async function doAxiosAsync(
         message.warn(`${operation}失败：服务器内部错误`).then(() => {})
       }
     }
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error(err)
-    if (err.response) {
-      if (err.response.status == 401) {
-        message.warn(`您未登录或登录失效，带您去登录。`).then(() => {})
-        router.push("/login").then(() => {})
-      } else if (err.response.status == 403) {
-        message.warn(`接口拒绝访问`).then(() => {})
+    if(err instanceof AxiosError){
+      if (err.response) {
+        if (err.response.status == 401) {
+          message.warn(`您未登录或登录失效，带您去登录。`).then(() => {})
+          router.push("/login").then(() => {})
+        } else if (err.response.status == 403) {
+          message.warn(`接口拒绝访问`).then(() => {})
+        } else {
+          message.warn(`${operation}失败：服务器内部错误`).then(() => {})
+        }
+      } else if (err.request) {
+        message.warn(`${operation}失败：网络错误`).then(() => {})
       } else {
-        message.warn(`${operation}失败：服务器内部错误`).then(() => {})
+        message.warn(`${operation}失败：浏览器错误`).then(() => {})
       }
-    } else if (err.request) {
-      message.warn(`${operation}失败：网络错误`).then(() => {})
-    } else {
-      message.warn(`${operation}失败：浏览器错误`).then(() => {})
     }
   } finally {
     if (allFinishCallback) {
