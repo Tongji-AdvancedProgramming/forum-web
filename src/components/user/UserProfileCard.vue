@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { doAxios } from "@/tools/axios"
 import { UploadOutlined } from "@ant-design/icons-vue"
-import { UploadChangeParam, message } from "ant-design-vue"
+import { Modal, UploadChangeParam, message } from "ant-design-vue"
+import ImageCropper from "@/components/helper/ImageCropper.vue"
 import axios from "axios"
-import { ref } from "vue"
+import { ref, h } from "vue"
 
 const uploadFileList = ref([])
 
@@ -16,6 +17,35 @@ const handleUploadStatusChange = (info: UploadChangeParam) => {
   } else if (info.file.status === "error") {
     message.error(`${info.file.name} file upload failed.`)
   }
+}
+const avatarFile = ref<File>()
+const showAvatarCropper = ref(false)
+const avatarCropper = ref<typeof ImageCropper>()
+let avatarCroppingResult: number | Blob = 0
+const handleBeforeUpload = (file: File) => {
+  avatarFile.value = file
+  return new Promise<Blob>((resolve, reject) => {
+    showAvatarCropper.value = true
+    let i = setInterval(() => {
+      if (avatarCroppingResult !== 0) {
+        clearInterval(i)
+        if (avatarCroppingResult === 1) reject()
+        else if (avatarCroppingResult instanceof Blob) {
+          resolve(avatarCroppingResult)
+        }
+      }
+    }, 50)
+  })
+}
+const handleAvatarCropperOk = () => {
+  let blob = <Blob>avatarCropper.value!.resolveBlob()
+  avatarCroppingResult = blob
+  showAvatarCropper.value = false
+}
+const handleAvatarCropperCancel = () => {
+  console.log("cancel")
+  avatarCroppingResult = 1
+  showAvatarCropper.value = false
 }
 
 const nickName = ref("")
@@ -70,11 +100,20 @@ const setSignature = () => {
         accept="image/*"
         v-model:file-list="uploadFileList"
         action="/api/user/avatar"
+        :before-upload="handleBeforeUpload"
         @change="handleUploadStatusChange"
         with-credentials
       >
         <a-button> <UploadOutlined /> 上传图片 </a-button>
       </a-upload>
+      <a-modal
+        v-model:open="showAvatarCropper"
+        title="裁剪图像"
+        @ok="handleAvatarCropperOk"
+        @cancel="handleAvatarCropperCancel"
+      >
+        <image-cropper :aspect-ratio="1" :file="avatarFile" ref="avatarCropper" />
+      </a-modal>
     </div>
 
     <div class="my-3 flex gap-3">

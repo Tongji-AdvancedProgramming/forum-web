@@ -19,6 +19,7 @@ const info = ref<StudentShortInfo>({
   major: "",
   role: 0,
   description: "",
+  value: undefined,
 })
 const tripleStr = computed(() => `${info.value.stuNo}-${info.value.major}-${info.value.realName}`)
 const breifStr = computed(() => `${info.value.nickName}(${tripleStr.value})`)

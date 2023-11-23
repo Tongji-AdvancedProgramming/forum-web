@@ -3,6 +3,7 @@ import App from "./App.vue"
 import "./style.css"
 
 import "animate.css"
+
 import "prismjs/themes/prism-coy.min.css"
 import "prismjs/plugins/line-numbers/prism-line-numbers.min.css"
 import "prismjs/plugins/toolbar/prism-toolbar.min.css"

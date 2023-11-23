@@ -37,6 +37,7 @@ declare module 'vue' {
     ForumPage: typeof import('./src/components/forum/ForumPage.vue')['default']
     ForumTree: typeof import('./src/components/forum/ForumTree.vue')['default']
     HomeView: typeof import('./src/components/home/HomeView.vue')['default']
+    ImageCropper: typeof import('./src/components/helper/ImageCropper.vue')['default']
     InfoCompletionModal: typeof import('./src/components/user/InfoCompletionModal.vue')['default']
     ListPosts: typeof import('./src/components/forum/board/ListPosts.vue')['default']
     LoginFaq: typeof import('./src/components/help/LoginFaq.vue')['default']
