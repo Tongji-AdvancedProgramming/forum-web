@@ -5,7 +5,7 @@ import { UploadChangeParam, message } from "ant-design-vue"
 import ImageCropper from "@/components/helper/ImageCropper.vue"
 import axios from "axios"
 import { ref } from "vue"
- 
+
 const uploadFileList = ref([])
 const handleUploadStatusChange = (info: UploadChangeParam) => {
   if (info.file.status !== "uploading") {
@@ -39,7 +39,7 @@ const handleBeforeUpload = (file: File) => {
   })
 }
 const handleAvatarCropperOk = () => {
-   (<Promise<Blob>>avatarCropper.value!.resolveBlob()).then((blob) => {
+  ;(<Promise<Blob>>avatarCropper.value!.resolveBlob()).then((blob) => {
     avatarCroppingResult.value = blob
     showAvatarCropper.value = false
   })
@@ -88,7 +88,7 @@ const setSignature = () => {
       location.reload()
     },
     () => (settingSignature.value = false),
-  ) 
+  )
 }
 
 const uploadCardFileList = ref([])
@@ -113,7 +113,7 @@ const handleBeforeCardUpload = (file: File) => {
   })
 }
 const handleCardCropperOk = () => {
-   (<Promise<Blob>>cardCropper.value!.resolveBlob()).then((blob) => {
+  ;(<Promise<Blob>>cardCropper.value!.resolveBlob()).then((blob) => {
     cardCroppingResult.value = blob
     showCardCropper.value = false
   })
@@ -153,7 +153,7 @@ const handleCardCropperCancel = () => {
     <div class="my-3 flex gap-3">
       <div class="font-bold">昵称</div>
       <div class="flex flex-col md:flex-row gap-3">
-        <a-input placeholder="请输入新昵称" v-model:value="nickName" />
+        <a-input placeholder="请输入新昵称" v-model:value="nickName" :maxlength="8" />
         <a-spin :spinning="settingNickName">
           <a-button @click="setNickName">设置</a-button>
         </a-spin>
@@ -175,7 +175,7 @@ const handleCardCropperCancel = () => {
         </a-spin>
       </div>
     </div>
-    
+
     <div class="my-3 flex gap-3 items-center">
       <div class="font-bold">名片背景</div>
       <a-upload

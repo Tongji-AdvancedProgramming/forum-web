@@ -27,7 +27,8 @@
     "types": ["node"],
 
     "noImplicitAny": false,
-    "allowJs": true
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "files": ["./components.d.ts"],

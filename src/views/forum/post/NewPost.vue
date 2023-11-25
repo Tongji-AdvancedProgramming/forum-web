@@ -59,11 +59,7 @@ const send = () => {
     <a-divider />
     <div>
       <div class="text-sm font-bold mb-3">编辑内容</div>
-      <component :is="TinyMceEditor" v-model="mceContent" />
-      <div class="flex mt-4">
-        <div class="grow" />
-        <a-button type="primary" @click="send">发送</a-button>
-      </div>
+      <CommentComponent />
     </div>
   </a-card>
 </template>

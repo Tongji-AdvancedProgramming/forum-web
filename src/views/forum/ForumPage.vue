@@ -31,10 +31,8 @@ const refresh = () => {
   doAxios(
     axios.get("/api/board", { params: { id: id.value } }),
     "获取板块数据",
-    (data) => {
-      if(data instanceof Board){
-        board.value = data
-      }
+    (data: Board) => {
+      board.value = data
     },
     () => {
       loading.value = false

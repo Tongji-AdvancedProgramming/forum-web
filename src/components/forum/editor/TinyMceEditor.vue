@@ -10,6 +10,7 @@ import "tinymce/plugins/wordcount"
 import "tinymce/plugins/image"
 import "tinymce/plugins/preview"
 import "tinymce/plugins/quickbars"
+import "tinymce/plugins/autosave"
 import "tinymce-i18n/langs/zh_CN.js"
 import "tinymce/models/dom/model.js"
 import "tinymce/skins/ui/oxide/content.min.css"
@@ -45,7 +46,7 @@ const props = defineProps({
   },
   plugins: {
     type: [String, Array],
-    default: "table codesample wordcount image preview",
+    default: "table codesample wordcount image preview autosave searchreplace",
   },
   toolbar: {
     type: [String, Array],
@@ -67,7 +68,10 @@ const init = reactive({
   height: props.height,
   promotion: false,
   images_upload_handler: imageUploadHandler,
-  codesample_global_prismjs: true
+  codesample_global_prismjs: true,
+  autosave_ask_before_unload: false,
+  autosave_restore_when_empty: true,
+  autosave_prefix: "tinymce-autosave-{path}{query}-{id}-",
 })
 
 const { modelValue } = toRefs(props)

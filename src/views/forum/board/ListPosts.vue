@@ -6,7 +6,7 @@ import { computed, onMounted, ref, watch } from "vue"
 import { Post } from "@/model/QuickType/Post.ts"
 import dayjs from "dayjs"
 import { useRoute } from "vue-router"
-import { PlusOutlined } from "@ant-design/icons-vue"
+import { ClockCircleOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons-vue"
 import router from "@/tools/router"
 
 const route = useRoute()
@@ -41,7 +41,7 @@ const postNew = () => {
     <div class="text-lg font-normal">所有帖子</div>
     <div class="mt-6 flex gap-3">
       <!-- <div class="grow"/> -->
-      <a-button type="primary" @click="postNew"><PlusOutlined/> 发布新帖子</a-button>
+      <a-button type="primary" @click="postNew"><PlusOutlined /> 发布新帖子</a-button>
     </div>
     <div class="flex flex-col gap-3">
       <a-list item-layout="horizontal" :data-source="posts">
@@ -53,8 +53,14 @@ const postNew = () => {
               </template>
               <template #description>
                 <div class="flex flex-col md:flex-row md:gap-3">
-                  <div>{{ dayjs(item.postDate).format("lll") }}</div>
-                  <div>發送者：Cinea醬</div>
+                  <div>
+                    <clock-circle-outlined />
+                    {{ dayjs(item.postDate).format("lll") }}
+                  </div>
+                  <div class="flex gap-1">
+                    <user-outlined />
+                    <user-small-profile :uid="item.postSno" />
+                  </div>
                 </div>
               </template>
             </a-list-item-meta>

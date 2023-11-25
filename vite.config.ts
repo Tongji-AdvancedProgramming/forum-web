@@ -18,7 +18,7 @@ export default defineConfig({
       ],
     }),
     prismjsPlugin({
-      theme: "coy",
+      theme: "one-light",
       languages: ["java", "clike", "c#", "rust", "go", "javascript"],
       plugins: ["toolbar", "line-numbers", "show-language", "copy-to-clipboard", "match-braces"],
     }),
