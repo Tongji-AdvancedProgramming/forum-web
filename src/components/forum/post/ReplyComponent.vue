@@ -7,17 +7,23 @@ import { useStore } from "@/tools/store.ts"
 import { message } from "ant-design-vue"
 import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
-import { Modal } from "ant-design-vue/lib"
+import { ForumConfig } from "@/config.ts"
+
+const Level = ForumConfig.Level
 
 const props = defineProps<{
   post: Post
-  refPost?: Post
+  refPost?: Post | string
 }>()
 
 const store = useStore()
 
-const showEditButton = computed(() => store.state.user.stuNo === props.post.postSno || store.state.userLevel > 0)
-const showDeleteButton = computed(() => store.state.user.stuNo === props.post.postSno || store.state.userLevel >= 4)
+const showEditButton = computed(
+  () => store.state.user.stuNo === props.post.postSno || store.state.userLevel >= Level.TA,
+)
+const showDeleteButton = computed(
+  () => store.state.user.stuNo === props.post.postSno || store.state.userLevel >= Level.TA,
+)
 
 const loading = ref(false)
 const replying = ref(false)
@@ -107,21 +113,33 @@ const toggleRefHide = () => {
 <template>
   <a-card>
     <a-spin :spinning="loading">
-      <div :id="`p${post.postId}`" hidden />
+      <!--锚点-->
+      <div :id="`p${post.postId}`" class="h-0" />
+
+      <!--引用的回复-->
       <div v-if="refPost != undefined" class="reference-box">
-        <div class="post-content reference-content-hide" v-html="refPost.postContent" ref="refText" />
-        <div class="flex flex-col md:flex-row md:gap-5 my-3 text-gray-400">
-          <div>
-            <clock-circle-outlined />
-            {{ dayjs(refPost.postDate).format("lll") }}
+        <div v-if="typeof refPost == 'string'">
+          <div class="h-[4em] flex flex-col justify-center">
+            <i>{{ refPost }}</i>
           </div>
-          <div class="flex gap-1">
-            <user-outlined />
-            <user-small-profile :uid="refPost.postSno" />
+        </div>
+        <div v-else>
+          <div class="post-content reference-content-hide" v-html="refPost.postContent" ref="refText" />
+          <div class="flex flex-col md:flex-row md:gap-5 my-3 text-gray-400">
+            <div>
+              <clock-circle-outlined />
+              {{ dayjs(refPost.postDate).format("lll") }}
+            </div>
+            <div class="flex gap-1">
+              <user-outlined />
+              <user-small-profile :uid="refPost.postSno" />
+            </div>
+            <a @click="toggleRefHide">{{ refHide ? "展开" : "隐藏" }}</a>
           </div>
-          <a @click="toggleRefHide">{{ refHide ? "展开" : "隐藏" }}</a>
         </div>
       </div>
+
+      <!--回复-->
       <div>
         <div v-if="!editing" class="post-content" v-html="post.postContent" />
         <editor-component
@@ -132,6 +150,8 @@ const toggleRefHide = () => {
           @submit="handleEdit"
         />
       </div>
+
+      <!--底部信息栏-->
       <div class="flex flex-col md:flex-row md:gap-5 mt-5 text-gray-400">
         <div>
           <clock-circle-outlined />
@@ -144,9 +164,16 @@ const toggleRefHide = () => {
         <div class="flex gap-3">
           <a class="text-green-700" @click="replying = true">回复</a>
           <a class="text-green-700" v-if="showEditButton" @click="editing = true">编辑</a>
-          <a class="text-green-700" v-if="showDeleteButton" @click="handleDelete">删除</a>
+          <div>
+            <div v-if="post.postIsDel == '1'" class="text-red-600">
+              <i>此回复已被删除</i>
+            </div>
+            <a class="text-green-700" v-else-if="showDeleteButton" @click="handleDelete">删除</a>
+          </div>
         </div>
       </div>
+
+      <!--回复栏-->
       <div v-if="replying">
         <a-divider />
         <editor-component show-cancel @cancel="replying = false" @submit="handleReply" />

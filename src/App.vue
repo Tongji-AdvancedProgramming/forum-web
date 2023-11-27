@@ -9,7 +9,9 @@ import { convertToStudent } from "@/model/Student.ts"
 import FooterView from "@/views/FooterView.vue"
 import InfoCompletionModal from "@/components/user/InfoCompletionModal.vue"
 import { StudentInfo } from "@/model/QuickType/StudentInfo.ts"
-import StatusBarUserCard from "@/components/user/StatusBarUserCard.vue"
+import StatusBarUserCard from "@/components/user/global/StatusBarUserCard.vue"
+import { useRoute } from "vue-router"
+import CNLocale from "ant-design-vue/es/locale/zh_CN"
 
 const isMobile = window.innerWidth < 768
 const headerHeight = ref(isMobile ? "50px" : "64px")
@@ -17,20 +19,23 @@ const headerHeight = ref(isMobile ? "50px" : "64px")
 const infoCompletionOpen = ref(false)
 
 const store = useStore()
+const route = useRoute()
 
 onMounted(() => {
-  doAxios(axios.get("/api/user"), "检查用户信息", (rawStudent: StudentRaw) => {
-    let user = convertToStudent(rawStudent)
-    store.commit("setUser", user)
-    doAxios(axios.get("/api/user/info"), "获取用户论坛信息", (rawStudentInfo: StudentInfo) => {
-      store.commit("setUserInfo", rawStudentInfo)
+  if (route.path !== "/help/login") {
+    doAxios(axios.get("/api/user"), "检查用户信息", (rawStudent: StudentRaw) => {
+      let user = convertToStudent(rawStudent)
+      store.commit("setUser", user)
+      doAxios(axios.get("/api/user/info"), "获取用户论坛信息", (rawStudentInfo: StudentInfo) => {
+        store.commit("setUserInfo", rawStudentInfo)
+      })
     })
-  })
+  }
 })
 </script>
 
 <template>
-  <a-config-provider :theme="antTheme">
+  <a-config-provider :theme="antTheme" :locale="CNLocale">
     <a-layout :style="{ background: 'transparent' }">
       <a-layout-header
         :style="{
@@ -51,7 +56,9 @@ onMounted(() => {
       </a-layout-header>
       <a-layout-content>
         <div :style="{ marginTop: headerHeight }">
-          <router-view />
+          <suspense>
+            <router-view />
+          </suspense>
         </div>
       </a-layout-content>
       <a-layout-footer :style="{ background: 'transparent' }">
@@ -70,6 +77,7 @@ body {
   margin: 0;
   background: rgb(213, 254, 228);
   background: radial-gradient(circle, rgba(213, 254, 228, 1) 0%, rgba(255, 255, 255, 1) 100%);
+  background-attachment: fixed;
   min-height: 100vh;
 
   font-weight: 200;

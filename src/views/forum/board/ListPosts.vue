@@ -10,29 +10,29 @@ import { ClockCircleOutlined, PlusOutlined, UserOutlined } from "@ant-design/ico
 import router from "@/tools/router"
 
 const route = useRoute()
-const boardId = computed(() => <String>route.params["id"])
+const boardId = computed(() => (<String>route.params["id"]).replace(/-/g, "/"))
+const boardIdSafe = computed(() => <String>route.params["id"])
 
-interface Props {
-  board: Board
-}
+interface Props {}
 const props = defineProps<Props>()
 
 const posts = ref<Post[]>()
 
 const fetch = () => {
-  let id = props.board.id
+  console.log("Fetch", boardId.value)
+  let id = boardId.value
   if (id != undefined && id.length > 0)
     doAxios(axios.get("/api/post/list", { params: { boardId: id } }), "获取帖子", (_posts: Post[]) => {
       posts.value = _posts
     })
 }
-watch(props.board, fetch)
+watch(boardId, fetch)
 onMounted(() => {
   fetch()
 })
 
 const postNew = () => {
-  router.push(`/forum/${boardId.value}/new`)
+  router.push(`/forum/${boardId.value.replace(/\//g, "-")}/new`)
 }
 </script>
 
@@ -49,10 +49,10 @@ const postNew = () => {
           <a-list-item>
             <a-list-item-meta>
               <template #title>
-                <a :href="`/forum/${boardId}/post/${item.postId}`">{{ item.postTitle }}</a>
+                <a @click="router.push(`/forum/${boardIdSafe}/post/${item.postId}`)">{{ item.postTitle }}</a>
               </template>
               <template #description>
-                <div class="flex flex-col md:flex-row md:gap-3">
+                <div class="flex flex-col lg:flex-row lg:gap-3">
                   <div>
                     <clock-circle-outlined />
                     {{ dayjs(item.postDate).format("lll") }}

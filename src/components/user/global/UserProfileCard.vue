@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { doAxios } from "@/tools/axios"
+import { doAxios } from "@/tools/axios.ts"
 import { UploadOutlined } from "@ant-design/icons-vue"
 import { UploadChangeParam, message } from "ant-design-vue"
 import ImageCropper from "@/components/helper/ImageCropper.vue"

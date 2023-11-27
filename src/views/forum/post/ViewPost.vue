@@ -1,18 +1,28 @@
-<script setup lang="ts">
-import { Post } from "@/model/QuickType/Post"
+<script lang="ts" setup>
+import { DefaultPost, Post } from "@/model/QuickType/Post"
 import { doAxios, doAxiosAsync } from "@/tools/axios"
 import axios from "axios"
-import { defineAsyncComponent, ref } from "vue"
-import { computed } from "vue"
+import { computed, onMounted, ref } from "vue"
 import { useRoute } from "vue-router"
-import { onMounted } from "vue"
-import { ClockCircleOutlined, UserOutlined, EditOutlined, DeleteOutlined, CheckOutlined } from "@ant-design/icons-vue"
+import {
+  CheckOutlined,
+  ClockCircleOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  EyeOutlined,
+  TagsOutlined,
+  UserOutlined,
+} from "@ant-design/icons-vue"
 import dayjs from "dayjs"
 import AddComment from "@/components/forum/post/comment/AddComment.vue"
 import { useStore } from "@/tools/store.ts"
 import EditorComponent from "@/components/forum/post/editor/EditorComponent.vue"
 import { message } from "ant-design-vue"
-import { Modal, Spin } from "ant-design-vue/lib"
+import { Modal } from "ant-design-vue/lib"
+import { ForumConfig } from "@/config.ts"
+import ChooseTag from "@/components/forum/post/tag/ChooseTag.vue"
+
+const Level = ForumConfig.Level
 
 const route = useRoute()
 
@@ -24,46 +34,27 @@ const route = useRoute()
 const postId = computed(() => <String | undefined>route.params["postId"] ?? "")
 
 const loading = ref(false)
-const curPost = ref<Post>({
-  postId: 0,
-  postTerm: "",
-  postCcode: "",
-  postHwupOrHwId: "",
-  postWeek: 0,
-  postChapter: 0,
-  postAnswerId: 0,
-  postType: "",
-  postSno: "",
-  postPriority: "",
-  postTag01: "0",
-  postTag02: "0",
-  postTag03: "0",
-  postTag04: "0",
-  postTag05: "0",
-  postTag06: "0",
-  postTag07: "0",
-  postTag08: "0",
-  postTag09: "0",
-  postTag10: "0",
-  postTitle: "",
-  postContent: "",
-  postDate: new Date(),
-  postIsDel: "0",
-  postComment: "",
-})
+const curPost = ref<Post>(DefaultPost)
 const curPosts = ref<Post[]>([])
 let postsMap = new Map<number, Post>()
+const showHidden = ref(false)
 
 const fetch = async () => {
+  loading.value = true
   await doAxiosAsync(
-    axios.get("/api/post", { params: { postId: postId.value } }),
+    axios.get("/api/post", { params: { postId: postId.value, showHidden: showHidden.value } }),
     "获取帖子",
     async (res: { posts: Post[] }) => {
       curPost.value = res.posts[0]
       curPosts.value = res.posts.slice(1)
+
+      postsMap.clear()
       curPosts.value.forEach((v) => {
         postsMap.set(v.postId, v)
       })
+    },
+    async () => {
+      loading.value = false
     },
   )
 }
@@ -77,9 +68,19 @@ onMounted(() => {
 
 const store = useStore()
 
-const showEditButton = computed(() => store.state.user.stuNo === curPost.value.postSno || store.state.userLevel > 0)
-const showDeleteButton = computed(() => store.state.user.stuNo === curPost.value.postSno || store.state.userLevel >= 4)
-const showAnyButton = computed(() => showEditButton || showDeleteButton)
+const showEditButton = computed(
+  () => store.state.user.stuNo === curPost.value.postSno || store.state.userLevel >= Level.TA,
+)
+const showDeleteButton = computed(
+  () => store.state.user.stuNo === curPost.value.postSno || store.state.userLevel >= Level.TA,
+)
+const showViewHiddenButton = computed(() => store.state.userLevel >= Level.TA)
+const showTagChooseButton = computed(() => store.state.userLevel >= Level.TA)
+const showAnyButton = computed(
+  () => showEditButton.value || showDeleteButton.value || showTagChooseButton.value || showViewHiddenButton.value,
+)
+
+// 编辑
 
 const editor = ref<InstanceType<typeof EditorComponent> | null>(null)
 const editing = ref(false)
@@ -114,6 +115,8 @@ const finishEdit = () => {
   )
 }
 
+// 删除
+
 const handleDelete = () => {
   Modal.confirm({
     title: "确定要删除吗",
@@ -131,12 +134,28 @@ const handleDelete = () => {
     },
   })
 }
+
+// 显示隐藏
+
+const toggleShowHidden = () => {
+  showHidden.value = !showHidden.value
+  fetch()
+}
+
+// 设置标签
+
+const showTagChooseModal = ref(false)
+const setTags = () => {
+  showTagChooseModal.value = true
+}
 </script>
 
 <template>
   <div class="flex flex-col gap-3">
+    <!--帖子-->
     <a-card>
       <a-spin :spinning="loading">
+        <!--帖子标题和时间-->
         <div class="title">{{ curPost.postTitle }}</div>
         <div class="flex flex-col md:flex-row md:gap-5 mt-2 text-gray-400">
           <div>
@@ -148,37 +167,78 @@ const handleDelete = () => {
             <user-small-profile :uid="curPost.postSno" />
           </div>
         </div>
+
+        <!--帖子内容-->
         <div class="mt-5">
-          <div v-if="!editing" v-html="curPost.postContent" class="post-content" />
-          <editor-component v-else hide-submit :init-content="curPost.postContent" :height="800" ref="editor" />
+          <div v-if="!editing" class="post-content" v-html="curPost.postContent" />
+          <editor-component v-else ref="editor" :height="800" :init-content="curPost.postContent" hide-submit />
         </div>
+
+        <!--工具栏-->
         <post-toolbar v-if="showAnyButton">
-          <a-tooltip title="编辑" v-if="showEditButton">
+          <a-tooltip v-if="showEditButton" title="编辑">
             <div>
-              <a-button v-if="!editing" @click="edit"><edit-outlined /> </a-button>
-              <a-button v-else type="primary" @click="finishEdit"><check-outlined /> </a-button>
+              <a-button v-if="!editing" @click="edit">
+                <edit-outlined />
+              </a-button>
+              <a-button v-else type="primary" @click="finishEdit">
+                <check-outlined />
+              </a-button>
             </div>
           </a-tooltip>
-          <a-tooltip title="删除" v-if="showDeleteButton">
+
+          <a-tooltip v-if="showTagChooseButton" title="设置标签">
             <div>
-              <a-button danger @click="handleDelete"><delete-outlined /> </a-button>
+              <a-button @click="setTags">
+                <tags-outlined />
+              </a-button>
+            </div>
+          </a-tooltip>
+          <a-modal v-model:open="showTagChooseModal" title="设置标签">
+            <suspense>
+              <div class="flex justify-center my-8">
+                <choose-tag :post="curPost" />
+              </div>
+              <template #fallback>
+                <a-skeleton active />
+              </template>
+            </suspense>
+          </a-modal>
+
+          <a-tooltip v-if="showViewHiddenButton" :title="showHidden ? '隐藏已删除的帖子' : '显示已删除的帖子'">
+            <div>
+              <a-button @click="toggleShowHidden">
+                <eye-outlined />
+              </a-button>
+            </div>
+          </a-tooltip>
+          <a-tooltip v-if="showDeleteButton" title="删除">
+            <div>
+              <a-button danger @click="handleDelete">
+                <delete-outlined />
+              </a-button>
             </div>
           </a-tooltip>
         </post-toolbar>
       </a-spin>
     </a-card>
 
+    <!--回复-->
     <div v-for="post in curPosts" :key="post.postId">
       <reply-component
         :post="post"
-        :ref-post="post.postAnswerId === curPost.postId ? undefined : postsMap.get(post.postAnswerId)"
+        :ref-post="
+          post.postAnswerId === curPost.postId ? undefined : postsMap.get(post.postAnswerId) ?? '原帖子已被删除'
+        "
       />
     </div>
+
+    <!--发送回复-->
     <add-comment :parent-id="curPost.postId" />
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .title {
   @apply font-normal text-3xl;
 }

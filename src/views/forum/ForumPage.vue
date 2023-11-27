@@ -14,7 +14,12 @@ const id = computed(() => (<string>route.params["id"]).replace(/-/g, "/"))
 // 获取当前页面类型
 const type = computed(() => <string | undefined>route.params["type"] ?? "list")
 // 获取当前页面的Post Id
-// const postId = computed(() => <string | undefined>route.params["postId"] ?? "")
+const postId = computed(() => <string | undefined>route.params["postId"] ?? "")
+
+watch([id, postId, type], () => {
+  console.log("Route changed:", id.value.toString(), type.value.toString(), postId.value.toString())
+  loading.value = true
+})
 
 const board = ref<Board>({
   course: { courseCode: "", courseFname: "", courseNo: "", courseSname: "", courseTerm: "", courseType: "" },
@@ -55,16 +60,20 @@ const title = computed(() => {
   else return `第${board.value.week}周整体问题`
 })
 
-const components = () => {
+const NewPost = defineAsyncComponent(() => import("@/views/forum/post/NewPost.vue"))
+const ViewPost = defineAsyncComponent(() => import("@/views/forum/post/ViewPost.vue"))
+const ListPosts = defineAsyncComponent(() => import("@/views/forum/board/ListPosts.vue"))
+
+const components = computed(() => {
   switch (type.value) {
     case "new":
-      return defineAsyncComponent(() => import("@/views/forum/post/NewPost.vue"))
+      return NewPost
     case "post":
-      return defineAsyncComponent(() => import("@/views/forum/post/ViewPost.vue"))
+      return ViewPost
     default:
-      return defineAsyncComponent(() => import("@/views/forum/board/ListPosts.vue"))
+      return ListPosts
   }
-}
+})
 </script>
 
 <template>
@@ -99,8 +108,8 @@ const components = () => {
           </a-card>
         </div>
         <div class="md:grow">
-          <suspense>
-            <component :is="components()" :board="board" />
+          <suspense @resolve="loading = false">
+            <component :is="components" />
             <template #fallback>
               <div>
                 <a-skeleton active />
