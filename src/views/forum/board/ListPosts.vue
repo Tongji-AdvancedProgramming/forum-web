@@ -50,6 +50,7 @@ const postNew = () => {
             <a-list-item-meta>
               <template #title>
                 <a @click="router.push(`/forum/${boardIdSafe}/post/${item.postId}`)">{{ item.postTitle }}</a>
+                <post-tags :post="item" class="ml-3" />
               </template>
               <template #description>
                 <div class="flex flex-col lg:flex-row lg:gap-3">

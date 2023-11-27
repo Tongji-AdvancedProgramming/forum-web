@@ -145,8 +145,28 @@ const toggleShowHidden = () => {
 // 设置标签
 
 const showTagChooseModal = ref(false)
+const ct = ref<InstanceType<typeof ChooseTag> | null>(null)
 const setTags = () => {
   showTagChooseModal.value = true
+}
+const setTagsOk = () => {
+  let tags = ct.value?.getSelected()
+  if (tags) {
+    let params = new URLSearchParams()
+    params.append("postId", curPost.value.postId.toString())
+    tags.forEach((v) => params.append("tag", v))
+
+    loading.value = true
+    doAxios(
+      axios.put("/api/post/tag", undefined, { params: params }),
+      "设置标签",
+      () => {
+        message.success("设置标签成功")
+        location.reload()
+      },
+      () => (loading.value = false),
+    )
+  }
 }
 </script>
 
@@ -156,7 +176,10 @@ const setTags = () => {
     <a-card>
       <a-spin :spinning="loading">
         <!--帖子标题和时间-->
-        <div class="title">{{ curPost.postTitle }}</div>
+        <div class="title">
+          {{ curPost.postTitle }}
+          <post-tags :post="curPost" />
+        </div>
         <div class="flex flex-col md:flex-row md:gap-5 mt-2 text-gray-400">
           <div>
             <clock-circle-outlined />
@@ -194,10 +217,10 @@ const setTags = () => {
               </a-button>
             </div>
           </a-tooltip>
-          <a-modal v-model:open="showTagChooseModal" title="设置标签">
+          <a-modal v-model:open="showTagChooseModal" title="设置标签" @ok="setTagsOk">
             <suspense>
               <div class="flex justify-center my-8">
-                <choose-tag :post="curPost" />
+                <choose-tag :post="curPost" ref="ct" />
               </div>
               <template #fallback>
                 <a-skeleton active />

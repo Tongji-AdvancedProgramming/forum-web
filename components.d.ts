@@ -47,6 +47,7 @@ declare module 'vue' {
     ImageCropper: typeof import('./src/components/helper/ImageCropper.vue')['default']
     InfoCompletionModal: typeof import('./src/components/user/InfoCompletionModal.vue')['default']
     NotificationBox: typeof import('./src/components/home/NotificationBox.vue')['default']
+    PostTags: typeof import('./src/components/forum/post/tag/PostTags.vue')['default']
     PostToolbar: typeof import('./src/components/forum/post/PostToolbar.vue')['default']
     ReplyComponent: typeof import('./src/components/forum/post/ReplyComponent.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

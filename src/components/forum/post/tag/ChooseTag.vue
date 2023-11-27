@@ -6,6 +6,16 @@ import { GetTags, SolvePostTags } from "@/helpers/tags.ts"
 const props = defineProps<{ post: Post }>()
 const postTags = SolvePostTags(props.post)
 
+const getSelected = () => {
+  return targetSelected.value
+}
+
+defineExpose<{
+  getSelected: () => string[]
+}>({
+  getSelected,
+})
+
 const tags = await GetTags()
 const transferDataSource = tags.map(
   (v, i) =>
@@ -17,14 +27,6 @@ const transferDataSource = tags.map(
 
 const targetSelected = ref(postTags)
 const selected = ref([])
-
-const getSelected = () => {
-  return selected.value
-}
-
-defineExpose<{ getSelected: () => string[] }>({
-  getSelected,
-})
 </script>
 
 <template>
