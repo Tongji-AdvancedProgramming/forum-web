@@ -15,22 +15,18 @@ const fetchTags = async () => {
   })
 }
 
-export async function GetTag(index: number) {
-  if (dayjs(tagsCacheValidBefore).isBefore(dayjs())) {
-    await fetchTags()
-  }
-  if (index < 0 || index >= tags.length) {
-    throw new Error("非法的Index")
-  } else {
-    return tags[index]
-  }
-}
-
 export async function GetTags() {
   if (dayjs(tagsCacheValidBefore).isBefore(dayjs())) {
     await fetchTags()
   }
   return tags
+}
+
+export async function GetTagsWithoutReversed() {
+  if (dayjs(tagsCacheValidBefore).isBefore(dayjs())) {
+    await fetchTags()
+  }
+  return tags.filter((v) => v.tagName !== "预留")
 }
 
 export function SolvePostTags(post: Post) {

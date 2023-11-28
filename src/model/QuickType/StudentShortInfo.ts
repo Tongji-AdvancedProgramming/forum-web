@@ -23,3 +23,5 @@ export class Convert {
     return JSON.stringify(value)
   }
 }
+
+export const DefaultStudentShortInfo = { description: "", major: "", nickName: "", realName: "", role: 0, stuNo: "" }

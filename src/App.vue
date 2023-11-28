@@ -7,7 +7,6 @@ import { StudentRaw } from "@/model/QuickType/StudentRaw.ts"
 import { useStore } from "@/tools/store"
 import { convertToStudent } from "@/model/Student.ts"
 import FooterView from "@/views/FooterView.vue"
-import InfoCompletionModal from "@/components/user/InfoCompletionModal.vue"
 import { StudentInfo } from "@/model/QuickType/StudentInfo.ts"
 import StatusBarUserCard from "@/components/user/global/StatusBarUserCard.vue"
 import { useRoute } from "vue-router"
@@ -15,8 +14,6 @@ import CNLocale from "ant-design-vue/es/locale/zh_CN"
 
 const isMobile = window.innerWidth < 768
 const headerHeight = ref(isMobile ? "50px" : "64px")
-
-const infoCompletionOpen = ref(false)
 
 const store = useStore()
 const route = useRoute()
@@ -65,8 +62,6 @@ onMounted(() => {
         <footer-view />
       </a-layout-footer>
     </a-layout>
-
-    <info-completion-modal v-model:open="infoCompletionOpen" />
   </a-config-provider>
 </template>
 

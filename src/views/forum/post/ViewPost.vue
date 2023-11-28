@@ -12,19 +12,23 @@ import {
   EyeOutlined,
   TagsOutlined,
   UserOutlined,
+  VerticalAlignTopOutlined,
 } from "@ant-design/icons-vue"
 import dayjs from "dayjs"
 import AddComment from "@/components/forum/post/comment/AddComment.vue"
 import { useStore } from "@/tools/store.ts"
 import EditorComponent from "@/components/forum/post/editor/EditorComponent.vue"
+import SelectPriority from "@/components/forum/post/priority/SelectPriority.vue"
 import { message } from "ant-design-vue"
 import { Modal } from "ant-design-vue/lib"
 import { ForumConfig } from "@/config.ts"
 import ChooseTag from "@/components/forum/post/tag/ChooseTag.vue"
+import PostMetaData from "@/components/forum/post/PostMetaData.vue"
 
 const Level = ForumConfig.Level
 
 const route = useRoute()
+const store = useStore()
 
 // 我们把 为了避免学期字符串对路由造成干扰转换的/ 转换回来。
 // const id = computed(() => (<String>route.params["id"]).replace(/-/g, "/"))
@@ -33,6 +37,7 @@ const route = useRoute()
 // 获取当前页面的Post Id
 const postId = computed(() => <String | undefined>route.params["postId"] ?? "")
 
+const notNull = ref(false)
 const loading = ref(false)
 const curPost = ref<Post>(DefaultPost)
 const curPosts = ref<Post[]>([])
@@ -45,13 +50,16 @@ const fetch = async () => {
     axios.get("/api/post", { params: { postId: postId.value, showHidden: showHidden.value } }),
     "获取帖子",
     async (res: { posts: Post[] }) => {
-      curPost.value = res.posts[0]
-      curPosts.value = res.posts.slice(1)
+      if (res.posts.length > 0) {
+        notNull.value = true
+        curPost.value = res.posts[0]
+        curPosts.value = res.posts.slice(1)
 
-      postsMap.clear()
-      curPosts.value.forEach((v) => {
-        postsMap.set(v.postId, v)
-      })
+        postsMap.clear()
+        curPosts.value.forEach((v) => {
+          postsMap.set(v.postId, v)
+        })
+      }
     },
     async () => {
       loading.value = false
@@ -60,13 +68,23 @@ const fetch = async () => {
 }
 await fetch()
 
+if (!notNull.value) {
+  if (store.state.userLevel >= Level.TA) {
+    // 疑似已被删除的帖子，重试一次
+    showHidden.value = true
+    await fetch()
+  }
+  if (!notNull.value) {
+    message.error("帖子不存在")
+    history.back()
+  }
+}
+
 onMounted(() => {
   import("@/tools/prism").then((Prism) => {
     Prism.default.highlightAll()
   })
 })
-
-const store = useStore()
 
 const showEditButton = computed(
   () => store.state.user.stuNo === curPost.value.postSno || store.state.userLevel >= Level.TA,
@@ -76,8 +94,14 @@ const showDeleteButton = computed(
 )
 const showViewHiddenButton = computed(() => store.state.userLevel >= Level.TA)
 const showTagChooseButton = computed(() => store.state.userLevel >= Level.TA)
+const showPrioritySelectButton = computed(() => store.state.userLevel >= Level.TA)
 const showAnyButton = computed(
-  () => showEditButton.value || showDeleteButton.value || showTagChooseButton.value || showViewHiddenButton.value,
+  () =>
+    showEditButton.value ||
+    showDeleteButton.value ||
+    showTagChooseButton.value ||
+    showViewHiddenButton.value ||
+    showPrioritySelectButton.value,
 )
 
 // 编辑
@@ -168,6 +192,34 @@ const setTagsOk = () => {
     )
   }
 }
+
+// 设置置顶
+
+const sp = ref<InstanceType<SelectPriority> | null>(null)
+const showPrioritySelectModal = ref(false)
+const setPriority = () => {
+  showPrioritySelectModal.value = true
+}
+const setPriorityOk = () => {
+  let p = sp.value?.getPriority()
+  if (p == null) return
+
+  loading.value = true
+  doAxios(
+    axios.put("/api/post/priority", undefined, {
+      params: {
+        postId: curPost.value.postId,
+        priority: p.toString(),
+      },
+    }),
+    "设置置顶",
+    () => {
+      message.success("设置置顶成功")
+      showPrioritySelectModal.value = false
+    },
+    () => (loading.value = false),
+  )
+}
 </script>
 
 <template>
@@ -180,16 +232,7 @@ const setTagsOk = () => {
           {{ curPost.postTitle }}
           <post-tags :post="curPost" />
         </div>
-        <div class="flex flex-col md:flex-row md:gap-5 mt-2 text-gray-400">
-          <div>
-            <clock-circle-outlined />
-            {{ dayjs(curPost.postDate).format("lll") }}
-          </div>
-          <div class="flex gap-1">
-            <user-outlined />
-            <user-small-profile :uid="curPost.postSno" />
-          </div>
-        </div>
+        <post-meta-data :post="curPost" class="mt-2" />
 
         <!--帖子内容-->
         <div class="mt-5">
@@ -220,12 +263,23 @@ const setTagsOk = () => {
           <a-modal v-model:open="showTagChooseModal" title="设置标签" @ok="setTagsOk">
             <suspense>
               <div class="flex justify-center my-8">
-                <choose-tag :post="curPost" ref="ct" />
+                <choose-tag ref="ct" :post="curPost" />
               </div>
               <template #fallback>
                 <a-skeleton active />
               </template>
             </suspense>
+          </a-modal>
+
+          <a-tooltip v-if="showPrioritySelectButton" title="设置置顶">
+            <div>
+              <a-button @click="setPriority">
+                <vertical-align-top-outlined />
+              </a-button>
+            </div>
+          </a-tooltip>
+          <a-modal v-model:open="showPrioritySelectModal" title="设置置顶" @ok="setPriorityOk">
+            <select-priority :cur-priority="Number(curPost.postPriority)" ref="sp" />
           </a-modal>
 
           <a-tooltip v-if="showViewHiddenButton" :title="showHidden ? '隐藏已删除的帖子' : '显示已删除的帖子'">
@@ -235,6 +289,7 @@ const setTagsOk = () => {
               </a-button>
             </div>
           </a-tooltip>
+
           <a-tooltip v-if="showDeleteButton" title="删除">
             <div>
               <a-button danger @click="handleDelete">
@@ -257,7 +312,7 @@ const setTagsOk = () => {
     </div>
 
     <!--发送回复-->
-    <add-comment :parent-id="curPost.postId" />
+    <add-comment v-if="curPost.postIsDel == '0'" :parent-id="curPost.postId" />
   </div>
 </template>
 
