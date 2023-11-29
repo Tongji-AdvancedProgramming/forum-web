@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AAutoComplete: typeof import('ant-design-vue/es')['AutoComplete']
     AAvatar: typeof import('ant-design-vue/es')['Avatar']
     AButton: typeof import('ant-design-vue/es')['Button']
     ACard: typeof import('ant-design-vue/es')['Card']
@@ -24,7 +25,8 @@ declare module 'vue' {
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
     AInput: typeof import('ant-design-vue/es')['Input']
-    AInputPassword: (typeof import("ant-design-vue/es"))["InputPassword"]
+    AInputPassword: typeof import('ant-design-vue/es')['InputPassword']
+    AInputSearch: typeof import('ant-design-vue/es')['InputSearch']
     ALayout: typeof import('ant-design-vue/es')['Layout']
     ALayoutContent: typeof import('ant-design-vue/es')['LayoutContent']
     ALayoutFooter: typeof import('ant-design-vue/es')['LayoutFooter']
@@ -54,6 +56,7 @@ declare module 'vue' {
     EditorComponent: typeof import('./src/components/forum/post/editor/EditorComponent.vue')['default']
     ForumTree: typeof import('./src/components/forum/ForumTree.vue')['default']
     ImageCropper: typeof import('./src/components/helper/ImageCropper.vue')['default']
+    InlineSearchBox: typeof import('./src/components/home/InlineSearchBox.vue')['default']
     NotificationBox: typeof import('./src/components/home/NotificationBox.vue')['default']
     PostMetaData: typeof import('./src/components/forum/post/PostMetaData.vue')['default']
     PostTags: typeof import('./src/components/forum/post/tag/PostTags.vue')['default']

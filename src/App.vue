@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import antTheme from "./assets/antdv-theme.json"
-import { onMounted, ref } from "vue"
+import { h, onMounted, ref } from "vue"
 import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
 import { StudentRaw } from "@/model/QuickType/StudentRaw.ts"
@@ -11,6 +11,7 @@ import { StudentInfo } from "@/model/QuickType/StudentInfo.ts"
 import StatusBarUserCard from "@/components/user/global/StatusBarUserCard.vue"
 import { useRoute } from "vue-router"
 import CNLocale from "ant-design-vue/es/locale/zh_CN"
+import { SearchOutlined } from "@ant-design/icons-vue"
 
 const isMobile = window.innerWidth < 768
 const headerHeight = ref(isMobile ? "50px" : "64px")
@@ -29,6 +30,9 @@ onMounted(() => {
     })
   }
 })
+
+/* 搜索（做一些处理以改善移动端体验） */
+const searching = ref(false)
 </script>
 
 <template>
@@ -44,9 +48,15 @@ onMounted(() => {
           height: headerHeight,
           lineHeight: headerHeight,
         }"
+        class="shadow"
       >
-        <div class="flex">
+        <div v-if="searching">
+          <inline-search-box @focusout="searching = false" />
+        </div>
+        <div v-else class="flex items-center">
           <span class="font-light">同济高程论坛</span>
+          <inline-search-box class="ml-10 hidden md:inline" />
+          <a-button shape="circle" :icon="h(SearchOutlined)" class="ml-3 md:hidden" @click="searching = true" />
           <div class="grow" />
           <status-bar-user-card />
         </div>

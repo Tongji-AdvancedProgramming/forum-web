@@ -2,15 +2,15 @@ import { LRUCache } from "lru-cache"
 import { doAxiosAsyncFull } from "@/tools/axios.ts"
 import axios from "axios"
 import { StudentShortInfo } from "@/model/QuickType/StudentShortInfo.ts"
-
-const baseUrl = "http://10.80.43.196"
+import { ForumConfig } from "@/config.ts"
+import App = ForumConfig.App
 
 export function GetAvatarUrl(uid: string) {
-  return `${baseUrl}/avatar/${uid}`
+  return `${App.BaseUrl}/avatar/${uid}`
 }
 
 export function GetCardBackgroundUrl(uid: string) {
-  return `${baseUrl}/card/${uid}`
+  return `${App.BaseUrl}/card/${uid}`
 }
 
 let userShortInfoCache = new LRUCache<string, StudentShortInfo>({

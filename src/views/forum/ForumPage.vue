@@ -16,9 +16,12 @@ const type = computed(() => <string | undefined>route.params["type"] ?? "list")
 // 获取当前页面的Post Id
 const postId = computed(() => <string | undefined>route.params["postId"] ?? "")
 
-watch([id, postId, type], () => {
+watch([id, postId, type], (value, oldValue) => {
   console.log("Route changed:", id.value.toString(), type.value.toString(), postId.value.toString())
-  loading.value = true
+  if (value[2] != oldValue[2]) {
+    // 组件将会发生重挂载
+    loading.value = true
+  }
 })
 
 const board = ref<Board>({

@@ -8,7 +8,7 @@ export interface Post {
   postId: number
   postTerm: string
   postCcode: string
-  postHwId: string
+  postHwId: number
   postWeek: number
   postChapter: number
   postAnswerId: number
@@ -47,7 +47,7 @@ export const DefaultPost: Post = {
   postId: 0,
   postTerm: "",
   postCcode: "",
-  postHwId: "",
+  postHwId: 0,
   postWeek: 0,
   postChapter: 0,
   postAnswerId: 0,

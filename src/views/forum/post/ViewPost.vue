@@ -2,19 +2,16 @@
 import { DefaultPost, Post } from "@/model/QuickType/Post"
 import { doAxios, doAxiosAsync } from "@/tools/axios"
 import axios from "axios"
-import { computed, onMounted, ref } from "vue"
+import { computed, onMounted, ref, watch } from "vue"
 import { useRoute } from "vue-router"
 import {
   CheckOutlined,
-  ClockCircleOutlined,
   DeleteOutlined,
   EditOutlined,
   EyeOutlined,
   TagsOutlined,
-  UserOutlined,
   VerticalAlignTopOutlined,
 } from "@ant-design/icons-vue"
-import dayjs from "dayjs"
 import AddComment from "@/components/forum/post/comment/AddComment.vue"
 import { useStore } from "@/tools/store.ts"
 import EditorComponent from "@/components/forum/post/editor/EditorComponent.vue"
@@ -36,6 +33,11 @@ const store = useStore()
 // const type = computed(() => <String | undefined>route.params["type"] ?? "list")
 // 获取当前页面的Post Id
 const postId = computed(() => <String | undefined>route.params["postId"] ?? "")
+
+watch(postId, () => {
+  console.log("Post Id Changed!", postId.value)
+  fetch()
+})
 
 const notNull = ref(false)
 const loading = ref(false)
@@ -279,7 +281,7 @@ const setPriorityOk = () => {
             </div>
           </a-tooltip>
           <a-modal v-model:open="showPrioritySelectModal" title="设置置顶" @ok="setPriorityOk">
-            <select-priority :cur-priority="Number(curPost.postPriority)" ref="sp" />
+            <select-priority ref="sp" :cur-priority="Number(curPost.postPriority)" />
           </a-modal>
 
           <a-tooltip v-if="showViewHiddenButton" :title="showHidden ? '隐藏已删除的帖子' : '显示已删除的帖子'">

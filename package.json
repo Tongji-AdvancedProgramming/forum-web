@@ -18,6 +18,7 @@
     "cropperjs": "^1.6.1",
     "dayjs": "^1.11.10",
     "lru-cache": "^10.1.0",
+    "meilisearch": "^0.36.0",
     "oh-vue-icons": "1.0.0-rc3",
     "prismjs": "^1.29.0",
     "sass": "^1.69.5",
