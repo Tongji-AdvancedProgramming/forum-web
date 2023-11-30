@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, onMounted, h } from "vue"
 import { SearchOutlined } from "@ant-design/icons-vue"
 import { Post } from "@/model/QuickType/Post.ts"
 import { useMeili } from "@/tools/meilisearch.ts"
@@ -9,10 +9,12 @@ import { useRouter } from "vue-router"
 import { BuildBoardId } from "@/helpers/board.ts"
 
 const emits = defineEmits<{
-  (e: "focusout"): void
+  (e: "blur"): void
 }>()
 
 const router = useRouter()
+
+const v = ref("搜索！")
 
 const options = ref<{ value: string }[]>([])
 const lastSearchWord = ref("")
@@ -54,18 +56,20 @@ const handleSelect = (val: string) => {
     return
   }
 }
+
+onMounted(() => {})
 </script>
 
 <template>
-  <a-auto-complete :options="options" @search="handleSearch" @select="handleSelect">
-    <a-input placeholder="搜索论坛内容" :bordered="false" @focusout="emits('focusout')" style="width: 400px">
-      <template #prefix>
-        <div class="text-gray-400">
-          <search-outlined />
-        </div>
-      </template>
-    </a-input>
-
+  <a-auto-complete
+    :options="options"
+    @search="handleSearch"
+    @select="handleSelect"
+    @blur="emits('blur')"
+    class="w-[320px] md:w-[400px]"
+    :bordered="false"
+    :placeholder="h('div', [h(SearchOutlined), ' 搜索论坛内容'])"
+  >
     <template #option="{ value: val }">
       <div v-if="(<string>val).startsWith('Finish')">
         <search-outlined /> 查看所有结果 ({{ (val as string).substring(6) }})

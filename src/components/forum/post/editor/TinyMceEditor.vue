@@ -12,6 +12,7 @@ import "tinymce/plugins/preview"
 import "tinymce/plugins/quickbars"
 import "tinymce/plugins/autosave"
 import "tinymce/plugins/searchreplace"
+import "@/tools/tinymce-plugins/emoticons.ts"
 import "tinymce-i18n/langs/zh_CN.js"
 import "tinymce/models/dom/model.js"
 import "tinymce/skins/ui/oxide/content.min.css"
@@ -47,12 +48,12 @@ const props = defineProps({
   },
   plugins: {
     type: [String, Array],
-    default: "table codesample wordcount image preview autosave searchreplace",
+    default: "table codesample wordcount image preview autosave searchreplace emoticons",
   },
   toolbar: {
     type: [String, Array],
     default:
-      "undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | link codesample image | preview",
+      "undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | emoticons link codesample image | preview",
   },
   height: {
     type: [Number],

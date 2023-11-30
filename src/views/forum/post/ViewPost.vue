@@ -47,6 +47,10 @@ let postsMap = new Map<number, Post>()
 const showHidden = ref(false)
 
 const fetch = async () => {
+  if (postId.value.length == 0) {
+    return
+  }
+
   loading.value = true
   await doAxiosAsync(
     axios.get("/api/post", { params: { postId: postId.value, showHidden: showHidden.value } }),

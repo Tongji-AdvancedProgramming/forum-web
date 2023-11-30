@@ -51,7 +51,7 @@ const searching = ref(false)
         class="shadow"
       >
         <div v-if="searching">
-          <inline-search-box @focusout="searching = false" />
+          <inline-search-box @blur="searching = false" />
         </div>
         <div v-else class="flex items-center">
           <span class="font-light">同济高程论坛</span>

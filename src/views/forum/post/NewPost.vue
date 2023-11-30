@@ -10,7 +10,7 @@ const route = useRoute()
 const boardId = computed(() => (<string>route.params["id"]).replace(/-/g, "/"))
 const boardIdRaw = computed(() => <string>route.params["id"])
 
-const TinyMceEditor = defineAsyncComponent(() => import("@/components/forum/editor/TinyMceEditor.vue"))
+const TinyMceEditor = defineAsyncComponent(() => import("@/components/forum/post/editor/TinyMceEditor.vue"))
 
 const loading = ref(false)
 const title = ref("")

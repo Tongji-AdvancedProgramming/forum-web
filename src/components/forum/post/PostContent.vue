@@ -31,6 +31,8 @@ onMounted(() => {
 .post-content {
   @import "@/assets/post.scss";
 
+  word-break: break-all;
+
   @media (min-width: 1280px) {
     max-width: 825px;
   }
