@@ -72,11 +72,11 @@ const handleSelect = (val: string) => {
       </div>
       <div v-else class="p-1 flex flex-col">
         <div
-          v-if="searchResults.get(val)!.postTitle.length > 0"
+          v-if="(searchResults.get(val)?.postTitle?.length ?? 0) > 0"
           class="font-bold searching-result"
-          v-html="searchResults.get(val)!.postTitle"
+          v-html="searchResults.get(val)?.postTitle ?? ''"
         ></div>
-        <div v-html="searchResults.get(val)!.postContent" class="searching-result" />
+        <div v-html="searchResults.get(val)?.postContent ?? ''" class="searching-result" />
       </div>
     </template>
   </a-auto-complete>

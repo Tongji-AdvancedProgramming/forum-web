@@ -82,12 +82,6 @@ if (!notNull.value) {
   }
 }
 
-onMounted(() => {
-  import("@/tools/prism").then((Prism) => {
-    Prism.default.highlightAll()
-  })
-})
-
 const showEditButton = computed(
   () => store.state.user.stuNo === curPost.value.postSno || store.state.userLevel >= Level.TA,
 )
@@ -238,7 +232,7 @@ const setPriorityOk = () => {
 
         <!--帖子内容-->
         <div class="mt-5">
-          <div v-if="!editing" class="post-content" v-html="curPost.postContent" />
+          <post-content v-if="!editing" :content="curPost.postContent" />
           <editor-component v-else ref="editor" :height="800" :init-content="curPost.postContent" hide-submit />
         </div>
 
@@ -321,19 +315,5 @@ const setPriorityOk = () => {
 <style lang="scss" scoped>
 .title {
   @apply font-normal text-3xl;
-}
-</style>
-
-<style lang="scss">
-.post-content {
-  @import "@/assets/post.scss";
-
-  @media (min-width: 1280px) {
-    max-width: 825px;
-  }
-
-  @media (min-width: 1536px) {
-    max-width: 1024px;
-  }
 }
 </style>

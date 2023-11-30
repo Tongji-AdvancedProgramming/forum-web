@@ -18,8 +18,8 @@ dependencies:
     specifier: ^4.1.1
     version: 4.1.1
   ant-design-vue:
-    specifier: 4.x
-    version: 4.0.3(vue@3.3.4)
+    specifier: 4.0.7
+    version: 4.0.7(vue@3.3.4)
   axios:
     specifier: ^1.5.1
     version: 1.5.1
@@ -29,6 +29,9 @@ dependencies:
   dayjs:
     specifier: ^1.11.10
     version: 1.11.10
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   lru-cache:
     specifier: ^10.1.0
     version: 10.1.0
@@ -70,6 +73,9 @@ devDependencies:
   '@babel/core':
     specifier: ^7.23.3
     version: 7.23.3
+  '@types/lodash':
+    specifier: ^4.14.202
+    version: 4.14.202
   '@types/node':
     specifier: ^20.8.4
     version: 20.8.4
@@ -660,6 +666,10 @@ packages:
     resolution: {integrity: sha512-VeiPZ9MMwXjO32/Xu7+OwflfmeoRwkE/qzndw42gGtgJwZopBnzy2gD//NN1+go1mADzkDcqf/KnFRSjTJ8xJA==}
     dev: true
 
+  /@types/lodash@4.14.202:
+    resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
+    dev: true
+
   /@types/minimist@1.2.5:
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
     dev: true
@@ -877,8 +887,8 @@ packages:
       color-convert: 2.0.1
     dev: true
 
-  /ant-design-vue@4.0.3(vue@3.3.4):
-    resolution: {integrity: sha512-fbgZbbirLx7rc19ytaGxApwS01CKLRzvEZmH0TVF06niQA9ekx7xkvfQGlmiSaCs4b8nWZi4Bo7gUzRNRt5YJA==}
+  /ant-design-vue@4.0.7(vue@3.3.4):
+    resolution: {integrity: sha512-oHTtc1GZkfENZTkt2aDvjaD4yoRsowYvCOmxA6+5AGqm5uz/datdJOXsq9nokIhC+vrAMhk6JQVFZ2hh7eU6Pw==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       vue: '>=3.2.0'

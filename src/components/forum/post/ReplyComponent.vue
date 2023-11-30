@@ -141,7 +141,7 @@ const toggleRefHide = () => {
 
       <!--回复-->
       <div>
-        <div v-if="!editing" class="post-content" v-html="post.postContent" />
+        <post-content v-if="!editing" :content="post.postContent" />
         <editor-component
           v-else
           :init-content="post.postContent"
