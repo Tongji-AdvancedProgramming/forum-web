@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { DefaultPost, Post } from "@/model/QuickType/Post"
-import { doAxios, doAxiosAsync } from "@/tools/axios"
+import { doAxios, doAxiosAsync, doAxiosAsyncFull } from "@/tools/axios"
 import axios from "axios"
 import { computed, onMounted, ref, watch } from "vue"
 import { useRoute } from "vue-router"
@@ -51,9 +51,21 @@ const fetch = async () => {
     return
   }
 
+  let actualPostId: number | null
+
   loading.value = true
+  actualPostId = <number | null>(
+    await doAxiosAsyncFull(axios.get(`/api/post/parent?postId=${postId.value}`), "获取帖子信息")
+  )
+
+  if (actualPostId == null) {
+    message.error("帖子不存在")
+    history.back()
+    return
+  }
+
   await doAxiosAsync(
-    axios.get("/api/post", { params: { postId: postId.value, showHidden: showHidden.value } }),
+    axios.get("/api/post", { params: { postId: actualPostId.toString(), showHidden: showHidden.value } }),
     "获取帖子",
     async (res: { posts: Post[] }) => {
       if (res.posts.length > 0) {

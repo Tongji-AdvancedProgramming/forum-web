@@ -12,7 +12,7 @@ import "tinymce/plugins/preview"
 import "tinymce/plugins/quickbars"
 import "tinymce/plugins/autosave"
 import "tinymce/plugins/searchreplace"
-import "@/tools/tinymce-plugins/emoticons.ts"
+import "tinymce-china-emoticons-plugin"
 import "tinymce-i18n/langs/zh_CN.js"
 import "tinymce/models/dom/model.js"
 import "tinymce/skins/ui/oxide/content.min.css"
@@ -48,12 +48,12 @@ const props = defineProps({
   },
   plugins: {
     type: [String, Array],
-    default: "table codesample wordcount image preview autosave searchreplace emoticons",
+    default: "table codesample wordcount image preview autosave searchreplace china-emoticons",
   },
   toolbar: {
     type: [String, Array],
     default:
-      "undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | emoticons link codesample image | preview",
+      "undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | china-emoticons link codesample image | preview",
   },
   height: {
     type: [Number],
@@ -74,6 +74,7 @@ const init = reactive({
   autosave_ask_before_unload: false,
   autosave_restore_when_empty: true,
   autosave_prefix: "tinymce-autosave-{path}{query}-{id}-",
+  china_emoticons_insert_size: 25,
 })
 
 const { modelValue } = toRefs(props)

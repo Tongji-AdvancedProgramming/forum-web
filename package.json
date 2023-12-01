@@ -29,7 +29,8 @@
     "vite-node": "^0.34.6",
     "vue": "^3.3.9",
     "vue-router": "^4.2.5",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "tinymce-china-emoticons-plugin": "^1.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.23.3",
