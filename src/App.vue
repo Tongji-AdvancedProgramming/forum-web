@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import antTheme from "./assets/antdv-theme.json"
-import { h, onMounted, ref } from "vue"
+import { computed, h, onMounted, ref } from "vue"
 import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
 import { StudentRaw } from "@/model/QuickType/StudentRaw.ts"
@@ -12,9 +12,12 @@ import StatusBarUserCard from "@/components/user/global/StatusBarUserCard.vue"
 import { useRoute } from "vue-router"
 import CNLocale from "ant-design-vue/es/locale/zh_CN"
 import { SearchOutlined } from "@ant-design/icons-vue"
+import { useWindowSize } from "@vueuse/core/index"
 
-const isMobile = window.innerWidth < 768
-const headerHeight = ref(isMobile ? "50px" : "64px")
+const windowSize = useWindowSize()
+
+const isMobile = computed(() => windowSize.width.value < 768)
+const headerHeight = computed(() => (isMobile.value ? "50px" : "64px"))
 
 const store = useStore()
 const route = useRoute()

@@ -1,10 +1,10 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { Post } from "@/model/QuickType/Post.ts"
-import { h, ref } from "vue"
+import { ref } from "vue"
 import { GetTags, SolvePostTags } from "@/helpers/tags.ts"
 import TagComponent from "@/components/forum/post/tag/TagComponent.vue"
 
-const props = defineProps<{ post: Post }>()
+const props = defineProps<{ post?: Post }>()
 const postTags = SolvePostTags(props.post)
 
 const getSelected = () => {
@@ -31,7 +31,7 @@ const selected = ref([])
 </script>
 
 <template>
-  <a-transfer :data-source="transferDataSource" v-model:selected-keys="selected" v-model:target-keys="targetSelected">
+  <a-transfer v-model:selected-keys="selected" v-model:target-keys="targetSelected" :data-source="transferDataSource">
     <template #render="item">
       <tag-component :tag="item.tag" />
     </template>

@@ -18,6 +18,7 @@ const fetchTags = async () => {
 export async function GetTags() {
   if (dayjs(tagsCacheValidBefore).isBefore(dayjs())) {
     await fetchTags()
+    tagsCacheValidBefore = dayjs().add(1, "hour").toDate()
   }
   return tags
 }
@@ -25,11 +26,14 @@ export async function GetTags() {
 export async function GetTagsWithoutReversed() {
   if (dayjs(tagsCacheValidBefore).isBefore(dayjs())) {
     await fetchTags()
+    tagsCacheValidBefore = dayjs().add(1, "hour").toDate()
   }
   return tags.filter((v) => v.tagName !== "预留")
 }
 
-export function SolvePostTags(post: Post) {
+export function SolvePostTags(post: Post | undefined) {
+  if (post == undefined) return []
+
   let tags: string[] = []
   if (post.postTag01 == "1") tags.push("0")
   if (post.postTag02 == "1") tags.push("1")

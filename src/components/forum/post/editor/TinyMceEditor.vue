@@ -74,7 +74,7 @@ const init = reactive({
   autosave_ask_before_unload: false,
   autosave_restore_when_empty: true,
   autosave_prefix: "tinymce-autosave-{path}{query}-{id}-",
-  china_emoticons_insert_size: 25,
+  china_emoticons_insert_size: 40,
 })
 
 const { modelValue } = toRefs(props)

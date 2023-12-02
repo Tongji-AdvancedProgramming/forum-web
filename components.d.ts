@@ -41,6 +41,7 @@ declare module 'vue' {
     ATransfer: typeof import('ant-design-vue/es')['Transfer']
     ATree: typeof import('ant-design-vue/es')['Tree']
     AUpload: typeof import('ant-design-vue/es')['Upload']
+    BatchPostOperations: typeof import('./src/components/forum/board/BatchPostOperations.vue')['default']
     ChooseTag: typeof import('./src/components/forum/post/tag/ChooseTag.vue')['default']
     EditorComponent: typeof import('./src/components/forum/post/editor/EditorComponent.vue')['default']
     ForumTree: typeof import('./src/components/forum/ForumTree.vue')['default']

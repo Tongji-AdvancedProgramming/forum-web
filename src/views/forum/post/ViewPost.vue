@@ -207,7 +207,7 @@ const setTagsOk = () => {
 
 // 设置置顶
 
-const sp = ref<InstanceType<SelectPriority> | null>(null)
+const sp = ref<InstanceType<typeof SelectPriority> | null>(null)
 const showPrioritySelectModal = ref(false)
 const setPriority = () => {
   showPrioritySelectModal.value = true
