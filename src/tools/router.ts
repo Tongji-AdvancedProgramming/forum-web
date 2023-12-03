@@ -7,7 +7,7 @@ const routes = [
   { path: "/forum/:id/:type", component: () => import("@/views/forum/ForumPage.vue") },
   { path: "/forum/:id/:type/:postId", component: () => import("@/views/forum/ForumPage.vue") },
   { path: "/help/login", component: () => import("@/views/help/LoginFaq.vue") },
-  { path: "/help/emoji", component: () => import("@/views/help/EmojiView.vue") },
+  { path: "/search", component: () => import("@/views/search/SearchPage.vue") },
 ]
 
 export default createRouter({

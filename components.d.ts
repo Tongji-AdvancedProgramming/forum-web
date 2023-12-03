@@ -45,6 +45,8 @@ declare module 'vue' {
     ChooseTag: typeof import('./src/components/forum/post/tag/ChooseTag.vue')['default']
     EditorComponent: typeof import('./src/components/forum/post/editor/EditorComponent.vue')['default']
     ForumTree: typeof import('./src/components/forum/ForumTree.vue')['default']
+    HomeworkComponent: typeof import('./src/components/forum/post/homework/HomeworkComponent.vue')['default']
+    HomeworkSmall: typeof import('./src/components/forum/post/homework/HomeworkSmall.vue')['default']
     ImageCropper: typeof import('./src/components/helper/ImageCropper.vue')['default']
     InlineSearchBox: typeof import('./src/components/home/InlineSearchBox.vue')['default']
     NotificationBox: typeof import('./src/components/home/NotificationBox.vue')['default']

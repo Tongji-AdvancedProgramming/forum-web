@@ -34,7 +34,7 @@ const board = ref<Board>({
 
 const loading = ref(false)
 
-const refresh = () => {
+const fetch = () => {
   loading.value = true
   doAxios(
     axios.get("/api/board", { params: { id: id.value } }),
@@ -48,19 +48,21 @@ const refresh = () => {
   )
 }
 
-watch(id, refresh)
+watch(id, fetch)
 
 const hideNavigation = ref(false)
 
 onMounted(() => {
-  refresh()
+  fetch()
   hideNavigation.value = window.innerWidth < 768
 })
 
 const title = computed(() => {
   if (board.value.location == "COURSE") return "课程整体问题"
   else if (board.value.location == "HOMEWORK") return board.value.homework?.hwDescription ?? "作业问题"
-  else return `第${board.value.week}周整体问题`
+  else if (board.value.location == "WEEKLY") return `第${board.value.week}周整体问题`
+  else if (board.value.location == "COURSE_SUMMARY") return `课程总览`
+  else if (board.value.location == "WEEK_SUMMARY") return `第${board.value.week}周总览`
 })
 
 const NewPost = defineAsyncComponent(() => import("@/views/forum/post/NewPost.vue"))

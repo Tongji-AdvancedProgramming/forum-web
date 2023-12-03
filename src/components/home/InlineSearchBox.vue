@@ -8,13 +8,13 @@ import SearchingIndex = ForumConfig.SearchingIndex
 import { useRouter } from "vue-router"
 import { BuildBoardId } from "@/helpers/board.ts"
 
+defineProps<{ width?: string }>()
+
 const emits = defineEmits<{
   (e: "blur"): void
 }>()
 
 const router = useRouter()
-
-const v = ref("搜索！")
 
 const options = ref<{ value: string }[]>([])
 const lastSearchWord = ref("")
@@ -67,6 +67,7 @@ onMounted(() => {})
     @select="handleSelect"
     @blur="emits('blur')"
     class="w-[320px] md:w-[400px]"
+    :style="width == undefined ? `` : `width: ${width}`"
     :bordered="false"
     :placeholder="h('div', [h(SearchOutlined), ' 搜索论坛内容'])"
   >

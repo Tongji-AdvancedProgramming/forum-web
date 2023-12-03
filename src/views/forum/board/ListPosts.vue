@@ -13,6 +13,7 @@ import PostMetaData from "@/components/forum/post/PostMetaData.vue"
 import Level = ForumConfig.Level
 import { useWindowSize } from "@vueuse/core"
 import BatchPostOperations from "@/components/forum/board/BatchPostOperations.vue"
+import { SolveBoardId } from "@/helpers/board.ts"
 
 const store = useStore()
 const showHiddenButton = computed(() => store.state.userLevel >= Level.TA)
@@ -22,10 +23,17 @@ const windowSize = useWindowSize()
 const route = useRoute()
 const boardId = computed(() => (<String>route.params["id"]).replace(/-/g, "/"))
 const boardIdSafe = computed(() => <String>route.params["id"])
-const isSummary = computed(
-  () => boardIdSafe.value.endsWith("p") || boardIdSafe.value.lastIndexOf("_") == boardIdSafe.value.indexOf("_"),
+
+const boardInfo = computed(() => SolveBoardId(boardId.value, false))
+
+const isSummary = computed(() => boardInfo.value.location.endsWith("SUMMARY"))
+const allowAdd = computed(
+  () =>
+    !isSummary.value &&
+    (store.state.userLevel >= Level.TA ||
+      boardInfo.value.location == "WEEKLY" ||
+      boardInfo.value.location == "HOMEWORK"),
 )
-const allowAdd = computed(() => !isSummary.value)
 
 const loading = ref(false)
 const posts = ref<Post[]>()
@@ -152,7 +160,7 @@ const handlePostSelect = (postId: number) => {
 
                 <!-- 帖子信息 -->
                 <template #description>
-                  <post-meta-data :post="item" />
+                  <post-meta-data :post="item" :show-hw-name="isSummary" />
                 </template>
               </a-list-item-meta>
 

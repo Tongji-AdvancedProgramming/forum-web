@@ -13,6 +13,7 @@ import { useRoute } from "vue-router"
 import CNLocale from "ant-design-vue/es/locale/zh_CN"
 import { SearchOutlined } from "@ant-design/icons-vue"
 import { useWindowSize } from "@vueuse/core/index"
+import router from "@/tools/router.ts"
 
 const windowSize = useWindowSize()
 
@@ -57,7 +58,7 @@ const searching = ref(false)
           <inline-search-box @blur="searching = false" />
         </div>
         <div v-else class="flex items-center">
-          <span class="font-light">同济高程论坛</span>
+          <a class="font-light text-black" @click="router.push('/')">同济高程论坛</a>
           <inline-search-box class="ml-10 hidden md:inline" />
           <a-button shape="circle" :icon="h(SearchOutlined)" class="ml-3 md:hidden" @click="searching = true" />
           <div class="grow" />

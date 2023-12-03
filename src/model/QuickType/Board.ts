@@ -4,9 +4,11 @@
 //
 //   const board = Convert.toBoard(json);
 
+export type PostLocation = "COURSE" | "HOMEWORK" | "WEEKLY" | "WEEK_SUMMARY" | "COURSE_SUMMARY"
+
 export interface Board {
   id: string
-  location: "COURSE" | "HOMEWORK" | "WEEKLY"
+  location: PostLocation
   course: Course
   week: number
   homework?: Homework
@@ -32,6 +34,19 @@ export interface Homework {
   hwBdate: Date
   hwEdate: Date
   hwAddDate: Date
+}
+
+export const DefaultHomework: Homework = {
+  hwAddDate: new Date(),
+  hwBdate: new Date(),
+  hwCcode: "",
+  hwChapter: 0,
+  hwDescription: "",
+  hwEdate: new Date(),
+  hwFilename: "",
+  hwId: 0,
+  hwTerm: "",
+  hwWeek: 0,
 }
 
 // Converts JSON strings to/from your types
