@@ -7,6 +7,7 @@ import { ForumConfig } from "@/config.ts"
 import SearchingIndex = ForumConfig.SearchingIndex
 import { useRouter } from "vue-router"
 import { BuildBoardId } from "@/helpers/board.ts"
+import { GetMyCourseCodes } from "@/helpers/course.ts"
 
 defineProps<{ width?: string }>()
 
@@ -21,13 +22,19 @@ const lastSearchWord = ref("")
 const searchResults = new Map<string, Post>()
 
 const meiliClient = useMeili()
-const handleSearch = (val: string) => {
+const handleSearch = async (val: string) => {
+  let filterList: string[][] = []
+  ;(await GetMyCourseCodes()).map((code: string[]) => {
+    filterList.push([`postTerm = "${code[0]}"`, `postCcode = ${code[1]}`])
+  })
+
   meiliClient
     .index(SearchingIndex.Post)
     .search(val, {
       attributesToCrop: ["postTitle", "postContent"],
       attributesToHighlight: ["postTitle", "postContent"],
       cropLength: 20,
+      filter: filterList,
       limit: 6,
     })
     .then((res) => {
@@ -57,7 +64,9 @@ const handleSelect = (val: string) => {
   }
 }
 
-onMounted(() => {})
+onMounted(() => {
+  GetMyCourseCodes().then()
+})
 </script>
 
 <template>

@@ -41,6 +41,10 @@ const posts = ref<Post[]>()
 const selectedTags = ref<string[]>([])
 const showHidden = ref(false)
 
+const total = ref(0)
+const pageIndex = ref(1)
+const pageSize = ref(20)
+
 const fetch = () => {
   let id = boardId.value
   if (id == undefined || id.length == 0) return
@@ -49,10 +53,17 @@ const fetch = () => {
   loading.value = true
   doAxios(
     axios.get("/api/post/list", {
-      params: { boardId: id, tags: encodeURIComponent(JSON.stringify(tagsForSend)), showHidden: showHidden.value },
+      params: {
+        boardId: id,
+        tags: encodeURIComponent(JSON.stringify(tagsForSend)),
+        showHidden: showHidden.value,
+        pageIndex: pageIndex.value,
+        pageSize: pageSize.value,
+      },
     }),
     "获取帖子",
     (data: { totalCount: number; posts: Post[] }) => {
+      total.value = data.totalCount
       posts.value = data.posts
     },
     () => (loading.value = false),
@@ -148,7 +159,19 @@ const handlePostSelect = (postId: number) => {
 
       <!-- 帖子列表 -->
       <div class="flex flex-col gap-3">
-        <a-list :data-source="posts" item-layout="horizontal">
+        <a-list
+          :data-source="posts"
+          item-layout="horizontal"
+          :pagination="{
+            pageSize: pageSize,
+            current: pageIndex,
+            total: total,
+            showSizeChanger: true,
+            onChange: fetch,
+            'onUpdate:current': (val: number) => (pageIndex = val),
+            'onUpdate:pageSize': (val: number) => (pageSize = val),
+          }"
+        >
           <template #renderItem="{ item, index }: { item: Post; index: number }">
             <a-list-item>
               <a-list-item-meta>
