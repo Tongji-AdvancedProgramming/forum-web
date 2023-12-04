@@ -4,6 +4,8 @@ import { message } from "ant-design-vue"
 import axios from "axios"
 import { doAxios } from "@/tools/axios.ts"
 import { useRouter } from "vue-router"
+import { ForumConfig } from "@/config.ts"
+import App = ForumConfig.App
 
 interface LoginData {
   username: string
@@ -50,7 +52,7 @@ const handleLogin = () => {
             <a-input-password v-model:value="loginData.password" placeholder="密码" size="large" class="md:h-[50px]" />
             <div class="flex gap-5">
               <a-input v-model:value="loginData.code" placeholder="验证码" size="large" class="md:h-[50px]" />
-              <img src="/api/captcha" alt="Captcha" class="w-[100px] md:w-auto" />
+              <img :src="`${App.BaseUrl}/api/captcha`" alt="Captcha" class="w-[100px] md:w-auto" />
             </div>
             <a-button size="large" type="primary" class="mt-6 font-light" @click="handleLogin">登录！</a-button>
           </div>
