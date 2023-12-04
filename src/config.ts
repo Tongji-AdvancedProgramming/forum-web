@@ -17,6 +17,6 @@ export namespace ForumConfig {
   }
 
   export namespace SearchingIndex {
-    export const Post = "post_dev"
+    export const Post = "post"
   }
 }

@@ -69,8 +69,8 @@ const loading = ref(false)
 
 const route = useRoute()
 
-const expId = ref([(<string>route.params["id"])?.replace(/-/g, "/")] ?? "")
-const selId = ref([(<string>route.params["id"])?.replace(/-/g, "/")] ?? "")
+const expId = ref([(<string>route.params["id"])?.replace(/-/g, "/") ?? ""])
+const selId = ref([(<string>route.params["id"])?.replace(/-/g, "/") ?? ""])
 
 onMounted(() => {
   loading.value = true
