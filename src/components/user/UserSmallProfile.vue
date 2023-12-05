@@ -24,7 +24,7 @@ const briefStr = computed(() => `${info.value?.nickName}(${tripleStr.value})`)
     </a-popover>
   </div>
   <div>
-    <user-level-tag :level="info?.role" />
+    <user-level-tag :level="info?.role ?? 0" />
   </div>
 </template>
 

@@ -1,8 +1,8 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useStore } from "@/tools/store"
 import NotificationBox from "@/components/home/NotificationBox.vue"
 import ForumTree from "@/components/forum/ForumTree.vue"
-import { h, onMounted, ref } from "vue"
+import { h, ref } from "vue"
 import { DownOutlined, UpOutlined } from "@ant-design/icons-vue"
 
 const store = useStore()
@@ -47,7 +47,7 @@ const hideNavigation = ref(false)
           </div>
         </a-card>
         <a-card class="flex items-center justify-center md:min-h-[400px] text-gray-500">
-          <a-empty description=""> 点击一个课程以进入论坛 </a-empty>
+          <a-empty description=""> 点击一个课程以进入论坛</a-empty>
         </a-card>
       </div>
     </div>

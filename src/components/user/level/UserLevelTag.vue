@@ -7,7 +7,7 @@ import { computed } from "vue"
 const props = defineProps<{ level: number }>()
 
 // 必须要从高到低排序
-const userLevels: [{ level: number; name: string; color: string }] = [
+const userLevels: { level: number; name: string; color: string }[] = [
   { level: Level.Super, name: LevelName.Super, color: "gold" },
   { level: Level.Admin, name: LevelName.Admin, color: "gold" },
   { level: Level.TA, name: LevelName.TA, color: "blue" },

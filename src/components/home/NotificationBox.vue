@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { RollbackOutlined } from "@ant-design/icons-vue"
 import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
 import { onMounted, ref } from "vue"

@@ -1,7 +1,7 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
-import { ref, defineAsyncComponent, computed } from "vue"
+import { computed, ref } from "vue"
 import { message } from "ant-design-vue"
 import { useRoute } from "vue-router"
 import router from "@/tools/router"

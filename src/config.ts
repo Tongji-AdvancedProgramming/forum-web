@@ -1,6 +1,9 @@
+const production = import.meta.env.PROD
+
 export namespace ForumConfig {
   export namespace App {
-    export const BaseUrl = "http://10.80.43.196"
+    export const BaseUrl = production ? "http://10.80.43.196" : "http://localhost:5173"
+    export const ResourceUrl = "http://10.80.43.196"
     export const SearchKey = "ffae8a1493f8ea9a66cab4094f845659fdc3f46c7cb4345ac0e525aef062bd43"
   }
 
@@ -17,6 +20,6 @@ export namespace ForumConfig {
   }
 
   export namespace SearchingIndex {
-    export const Post = "post"
+    export const Post = production ? "post" : "post_dev"
   }
 }

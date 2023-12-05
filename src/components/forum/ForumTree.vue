@@ -50,8 +50,8 @@ const treeData = ref<DataNode[]>([])
 
 const router = useRouter()
 
-const handleSelect = (selectedKeys: string[]) => {
-  console.log(selectedKeys)
+const handleSelect = (s: Key[]) => {
+  const selectedKeys = <string[]>s
 
   let key = selectedKeys[0]
 
@@ -59,7 +59,7 @@ const handleSelect = (selectedKeys: string[]) => {
   key = key.replace(/\//g, "-")
 
   if (key.endsWith("_down")) {
-    router.push(`/download/${key.replace(/_down/, "")}`)
+    router.push(`/forum/${key.replace(/_down/, "")}/download`)
   } else {
     router.push(`/forum/${key}`)
   }

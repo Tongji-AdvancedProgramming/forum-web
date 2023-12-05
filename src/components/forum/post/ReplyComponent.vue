@@ -8,6 +8,7 @@ import { message } from "ant-design-vue"
 import { doAxios } from "@/tools/axios.ts"
 import axios from "axios"
 import { ForumConfig } from "@/config.ts"
+import { Modal } from "ant-design-vue/lib"
 
 const Level = ForumConfig.Level
 

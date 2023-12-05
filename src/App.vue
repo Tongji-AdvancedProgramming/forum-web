@@ -12,7 +12,7 @@ import StatusBarUserCard from "@/components/user/global/StatusBarUserCard.vue"
 import { useRoute } from "vue-router"
 import CNLocale from "ant-design-vue/es/locale/zh_CN"
 import { SearchOutlined } from "@ant-design/icons-vue"
-import { useWindowSize } from "@vueuse/core/index"
+import { useWindowSize } from "@vueuse/core"
 import router from "@/tools/router.ts"
 
 const windowSize = useWindowSize()

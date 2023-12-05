@@ -6,11 +6,11 @@ import { ForumConfig } from "@/config.ts"
 import App = ForumConfig.App
 
 export function GetAvatarUrl(uid: string) {
-  return `${App.BaseUrl}/avatar/${uid}`
+  return `${App.ResourceUrl}/avatar/${uid}`
 }
 
 export function GetCardBackgroundUrl(uid: string) {
-  return `${App.BaseUrl}/card/${uid}`
+  return `${App.ResourceUrl}/card/${uid}`
 }
 
 let userShortInfoCache = new LRUCache<string, StudentShortInfo>({

@@ -68,6 +68,7 @@ const title = computed(() => {
 const NewPost = defineAsyncComponent(() => import("@/views/forum/post/NewPost.vue"))
 const ViewPost = defineAsyncComponent(() => import("@/views/forum/post/ViewPost.vue"))
 const ListPosts = defineAsyncComponent(() => import("@/views/forum/board/ListPosts.vue"))
+const DownloadView = defineAsyncComponent(() => import("@/views/forum/download/DownloadView.vue"))
 
 const components = computed(() => {
   switch (type.value) {
@@ -75,6 +76,8 @@ const components = computed(() => {
       return NewPost
     case "post":
       return ViewPost
+    case "download":
+      return DownloadView
     default:
       return ListPosts
   }

@@ -15,6 +15,8 @@ function handleError(err: AxiosError, operation: string) {
       if (err.response.status == 401) {
         message.warn(`您未登录或登录失效，带您去登录。`).then(() => {})
         router.push("/login").then(() => {})
+      } else if (err.response.data && err.response.data["msg"] != undefined) {
+        message.warn(`${operation}失败：${err.response.data["msg"]}`).then(() => {})
       } else if (err.response.status == 403) {
         message.warn(`接口拒绝访问`).then(() => {})
       } else {
