@@ -4,6 +4,8 @@
 //
 //   const homeworkUploaded = Convert.toHomeworkUploaded(json);
 
+import dayjs from "dayjs"
+
 export interface HomeworkUploaded {
   hwupTerm: string
   hwupCcode: string
@@ -13,7 +15,7 @@ export interface HomeworkUploaded {
   hwupFilename: string
   hwupFilemd5: string
   hwupDescription: string
-  hwupDateAdd: Date
+  hwupDateAdd: string
   hwupIsDel: HwupIsDel
   hwupComment: string
 }
@@ -24,7 +26,7 @@ export const DefaultHomeworkUploaded: HomeworkUploaded = {
   hwupCcode: "",
   hwupChapter: 0,
   hwupComment: "",
-  hwupDateAdd: new Date(),
+  hwupDateAdd: "",
   hwupDescription: "",
   hwupFilemd5: "",
   hwupFilename: "",

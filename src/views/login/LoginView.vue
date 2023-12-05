@@ -39,6 +39,8 @@ const handleLogin = () => {
     router.push("/").then(() => location.reload())
   })
 }
+
+const showTips = ref(false)
 </script>
 
 <template>
@@ -58,7 +60,14 @@ const handleLogin = () => {
             </div>
             <a-button size="large" type="primary" class="mt-6 font-light" @click="handleLogin">登录！</a-button>
           </div>
-          <a href="/help/login" class="mt-5 text-center text-green-900">注册/忘记密码</a>
+          <a class="mt-5 text-center text-green-900" @click="showTips = true">注册/忘记密码</a>
+          <a-alert v-if="showTips">
+            <template #message>
+              目前本网站未开放注册功能，已选课同学和助教请使用交作业网站的账号密码登录；
+              未选课同学暂时无法使用，敬请谅解。 如您忘记密码，请联系教师重置密码。如需要更改密码，
+              直接前往交作业网站更改即可。
+            </template>
+          </a-alert>
         </div>
         <div class="grow" />
       </div>
