@@ -46,8 +46,13 @@ const send = (content: string) => {
       <div>
         <div class="flex gap-3 text-sm font-bold mb-3">
           <div class="">标题</div>
-          <a>标题指南</a>
-          <a>提问的艺术</a>
+          <a-popover placement="bottom">
+            <a>标题指南</a>
+            <template #content> 待共同完善 </template>
+          </a-popover>
+          <a href="https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md">
+            《提问的智慧》
+          </a>
         </div>
         <a-input v-model:value="title" class="h-[50px]" />
       </div>
