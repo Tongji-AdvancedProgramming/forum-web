@@ -7,7 +7,7 @@ import router from "@/tools/router.ts"
 const props = defineProps<{ term: string; hwId: number; ccode: string; week: number }>()
 
 const hwInfo = computedAsync<Homework>(
-  async () => (await GetHomeworkInfo(props.term, props.hwId)) ?? DefaultHomework,
+  async () => (await GetHomeworkInfo(props.term, props.hwId, props.ccode)) ?? DefaultHomework,
   DefaultHomework,
 )
 
